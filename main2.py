@@ -35,7 +35,7 @@ class Item():
 #    print(Inventory["Pizza"].duration)
  
 class Operation:
-    Students = {"John": ["613770", "j@F.com", "-8544-58-9234452", []]}
+    Students = {"John": ["613770", "j@F.com", "-8544-58-9234452", []], "Johannes": ["hi", "hi@F.com", "-8544-58-9234452", []]}
     Inventory = {"Pizza" : Item("Pizza", "Shloimy", 1, "food", "$2", 500, 9, 1, "Tel Aviv Pizza Shop", ["Shloimy"]),}
     def __init__(self, mode):
         self.mode = int(mode)
@@ -43,6 +43,7 @@ class Operation:
         email = input("Please enter Email: ")
         phone = input("Please enter Phone: ")
         Operation.Students[name]=[password, phone, email, []]
+        return True
     def modedlistofstuff(self):
         self.modedinventory = {}
         for key, value in Operation.Inventory.items():
@@ -52,9 +53,16 @@ class Operation:
     def printavailableinventory(self):
         inventory = self.modedlistofstuff()
         for key, value in inventory.items():  
-            print(f"item: {key}, organizer: {value.human}, price you pay: {value.studentprice}, Expires in {value.duration} secs, contributions needed: {value.amount}, quantity of bulk: {value.stock}", "\n")
+            print(f"item: {key}, organizer: {value.human}, price you pay: {value.studentprice}, Expires in {value.duration} secs, contributions needed: {value.amount}, quantity of bulk: {value.stock} participants: {value.humanlist}", "\n")
     def info(self, choice):
         print(self.modedlistofstuff()[choice].info)
+    def orderjoinedexecution(self):
+        print("Order Joined")
+        Operation.Inventory[choice].amount-=int(amount)
+        Operation.Inventory[choice].humanlist.append(self.name)
+        Operation.Students[self.name][-1].append(choice)
+        if self.templist[choice].amount==0:
+            self.order(choice)
     def joinorder(self, amount, choice):
         if choice not in Operation.Inventory:
             print("Item not found")
@@ -62,14 +70,10 @@ class Operation:
             self.name = input("Please enter Name: ")
             self.password = input("Please enter your password: ")
             self.templist = self.modedlistofstuff()
-            for key, value in Operation.Students.items():
+            for key, value in self.templist.items():
                 if self.name == key:
-                    if self.password==value:
-                        print("Order Joined")
-                        self.templist[choice].amount-=amount
-                        value[-1].append(choice)
-                        if self.templist[choice].amount==0:
-                            self.order(choice)
+                    if self.password==value[0]:
+                        self.orderjoinedexecution()
                     else:
                         print("Incorrect Password")
                 else:
@@ -77,10 +81,7 @@ class Operation:
                     newchoice = int(input("1. yes, 2. no"))
                     if newchoice==1:
                         if self.createnewuser(self.name, self.password):
-                            print("Order Joined")
-                        self.templist[choice].amount-=1
-                        if self.templist[choice].amount==0:
-                            self.order(choice)
+                            self.orderjoinedexecution()
     def addtoinventory(self):
         name, human, mode, category, studentprice, duration, amount, stock, info =input("").split(", ")
         Operation.Inventory[name] = Item(name, human, mode, category, studentprice, duration, amount, stock, info)
@@ -101,6 +102,8 @@ if choice == 1:
     item = input("Please enter item name")
     amount = input("Please enter item amount")
     program.joinorder(amount, item)
+    print(Operation.Inventory)
     program.printavailableinventory()
+    print(Operation.Students)
              
 
