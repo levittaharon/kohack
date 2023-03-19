@@ -10,7 +10,7 @@ import student_class
 # 10. HUMANLIST: list of participating students
 class Item():
     def __init__(self, name, human, mode, category, studentprice, duration, amount, stock, info, humanlist):
-        print("New Item created")
+        print(f"New {name} Item created")
         self.name = name
         self.category = category
         self.studentprice = studentprice
@@ -90,16 +90,13 @@ class Operation:
         self.item = item
         self.mode = Mode
         self.human = input("Please enter your name:")
+        self.password = input("Please enter your password:")
         for key, value in Operation.Students.items():
-            if self.name == key:
+            if self.human == key:
                 if self.password==value[0]:
-                    print("Order Joined")
-                    if self.templist[choice].amount==0:
-                        self.order(choice, self.name)
-                        return True
-                    else:
-                    self.human, self.category, self.studentprice, self.duration, self.amount, self.stock, self.info =input("").split(", ")
-                    Operation.Inventory[self.item] = Item(self.item, self.human, self.mode, self.category, self.studentprice, self.duration, amount, self.stock, self.info)
+                    self.category, self.studentprice, self.duration, self.amount, self.stock, self.info =input("").split(", ")
+                    Operation.Inventory[self.item] = Item(self.item, self.human, self.mode, self.category, self.studentprice, self.duration, self.amount, self.stock, self.info, [self.human])
+
     def cancelorder(self, choice):
         print("ordercanceled")
         del self.modedlistofstuff()[choice]
@@ -125,11 +122,14 @@ if Mode==1:
         program.printavailableinventory()
         print(Operation.Students)
     elif choice == 2:
-        program.addtoinventory(item)
+        program.addtoinventory(item, Mode)
 elif Mode==2:
     choice = int(input("1. Post Item\n2.Buy Item"))
     item = input("Please enter item name")
     if choice == 1:
         program.addtoinventory(item, Mode)
+        print(Operation.Inventory)
+        program.printavailableinventory()
+        print(Operation.Students)
              
 
