@@ -6,7 +6,7 @@ import tkinter as tk
 root = Tk()
 root.title("Creating multiple windows")
 root.geometry("500x500")
-
+print('hello world')
 def new_window():
     top = Toplevel()
     top.title("Second window")
