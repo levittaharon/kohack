@@ -29,29 +29,29 @@ class Window:
         self.notebook = ttk.Notebook(self.master)
  
         # Frame 1 and 2
-        frame1 = ttk.Frame(self.notebook)
-        frame2 = ttk.Frame(self.notebook)
+        self.frame1 = ttk.Frame(self.notebook)
+        self.frame2 = ttk.Frame(self.notebook)
  
-        label1 = ttk.Label(frame1, text = "Invetory,  Items left in stock, price $5")
-        label1.pack(pady = 20, padx = 10)
-        label2 = ttk.Label(frame2, text = "Item 3:3 left in stock")
-        label2.pack(pady = 15, padx = 10)
+        self.label1 = ttk.Label(self.frame1, text = "Invetory,  Items left in stock, price $5")
+        self.label1.pack(pady = 20, padx = 10)
+        self.label2 = ttk.Label(self.frame2, text = "Item 3:3 left in stock")
+        self.label2.pack(pady = 15, padx = 10)
  
-        frame1.pack(fill= tk.BOTH, expand=True)
-        frame2.pack(fill= tk.BOTH, expand=True)
+        self.frame1.pack(fill= tk.BOTH, expand=True)
+        self.frame2.pack(fill= tk.BOTH, expand=True)
  
-        self.notebook.add(frame1, text = "Amenities")
-        self.notebook.add(frame2, text = "Food")
+        self.notebook.add(self.frame1, text = "Amenities")
+        self.notebook.add(self.frame2, text = "Food")
  
         # Frame 3
-        frame3 = ttk.Frame(self.notebook)
+        self.frame3 = ttk.Frame(self.notebook)
          
-        label3 = ttk.Label(frame3, text = "praying with fire, Gemera sukkah")
-        label3.pack(pady = 50, padx = 20)
+        self.label3 = ttk.Label(self.frame3, text = "praying with fire, Gemera sukkah")
+        self.label3.pack(pady = 50, padx = 20)
          
-        frame3.pack(fill= tk.BOTH, expand=True)
+        self.frame3.pack(fill= tk.BOTH, expand=True)
  
-        self.notebook.insert("end", frame3, text = "Books")
+        self.notebook.insert("end", self.frame3, text = "Books")
         self.notebook.pack(padx = 5, pady = 5, expand = True)
          
  
@@ -124,7 +124,7 @@ tick()
 
 
 # create listbox object
-listbox = Listbox(root, height = 10,
+listbox = Listbox(window.frame1, height = 10,
                   width = 15,
                   bg = "black",
                   activestyle = 'dotbox',
@@ -132,10 +132,10 @@ listbox = Listbox(root, height = 10,
                   fg = "white")
  
 # Define the size of the window.
-root.geometry("300x250") 
+#root.geometry("300x250") 
  
 # Define a label for the list. 
-label = Label(root, text = "")
+label = Label(window.frame1, text = "")
  
 # insert elements by their
 # index and names.

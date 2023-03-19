@@ -89,9 +89,17 @@ class Operation:
     def addtoinventory(self, item, Mode):
         self.item = item
         self.mode = Mode
-        self.human = input("Please enter your name")
-        self.human, self.category, self.studentprice, self.duration, self.amount, self.stock, self.info =input("").split(", ")
-        Operation.Inventory[self.item] = Item(self.item, self.human, self.mode, self.category, self.studentprice, self.duration, amount, self.stock, self.info)
+        self.human = input("Please enter your name:")
+        for key, value in Operation.Students.items():
+            if self.name == key:
+                if self.password==value[0]:
+                    print("Order Joined")
+                    if self.templist[choice].amount==0:
+                        self.order(choice, self.name)
+                        return True
+                    else:
+                    self.human, self.category, self.studentprice, self.duration, self.amount, self.stock, self.info =input("").split(", ")
+                    Operation.Inventory[self.item] = Item(self.item, self.human, self.mode, self.category, self.studentprice, self.duration, amount, self.stock, self.info)
     def cancelorder(self, choice):
         print("ordercanceled")
         del self.modedlistofstuff()[choice]
