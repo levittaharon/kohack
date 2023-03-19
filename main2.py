@@ -56,13 +56,6 @@ class Operation:
             print(f"item: {key}, organizer: {value.human}, price you pay: {value.studentprice}, Expires in {value.duration} secs, contributions needed: {value.amount}, quantity of bulk: {value.stock} participants: {value.humanlist}", "\n")
     def info(self, choice):
         print(self.modedlistofstuff()[choice].info)
-    def orderjoinedexecution(self):
-        print("Order Joined")
-        Operation.Inventory[choice].amount-=int(amount)
-        Operation.Inventory[choice].humanlist.append(self.name)
-        Operation.Students[self.name][-1].append(choice)
-        if self.templist[choice].amount==0:
-            self.order(choice)
     def joinorder(self, amount, choice):
         if choice not in Operation.Inventory:
             print("Item not found")
@@ -70,10 +63,15 @@ class Operation:
             self.name = input("Please enter Name: ")
             self.password = input("Please enter your password: ")
             self.templist = self.modedlistofstuff()
-            for key, value in self.templist.items():
+            for key, value in Operation.Students.items():
                 if self.name == key:
                     if self.password==value[0]:
-                        self.orderjoinedexecution()
+                        print("Order Joined")
+                        Operation.Inventory[choice].amount-=int(amount)
+                        Operation.Inventory[choice].humanlist.append(self.name)
+                        Operation.Students[self.name][-1].append(choice)
+                        if self.templist[choice].amount==0:
+                            self.order(choice)
                     else:
                         print("Incorrect Password")
                 else:
@@ -81,19 +79,29 @@ class Operation:
                     newchoice = int(input("1. yes, 2. no"))
                     if newchoice==1:
                         if self.createnewuser(self.name, self.password):
-                            self.orderjoinedexecution()
-    def addtoinventory(self):
-        name, human, mode, category, studentprice, duration, amount, stock, info =input("").split(", ")
-        Operation.Inventory[name] = Item(name, human, mode, category, studentprice, duration, amount, stock, info)
+                            print("Order Joined")
+                            Operation.Inventory[choice].amount-=int(amount)
+                            Operation.Inventory[choice].humanlist.append(self.name)
+                            Operation.Students[self.name][-1].append(choice)
+                            if self.templist[choice].amount==0:
+                                self.order(choice)
+    def addtoinventory(self, item, Mode):
+        self.item = item
+        self.mode = Mode
+        self.human = input("Please enter your name")
+        self.human, self.category, self.studentprice, self.duration, self.amount, self.stock, self.info =input("").split(", ")
+        Operation.Inventory[self.item] = Item(self.item, self.human, self.mode, self.category, self.studentprice, self.duration, amount, self.stock, self.info)
     def cancelorder(self, choice):
         print("ordercanceled")
         del self.modedlistofstuff()[choice]
     def order(self, choice):
-        print("Item ordered")
+        print(f"{choice} ordered")
+        del Operation.Inventory[choice]
         
  
     
 
+print("Welcome to the Yeshiva Marketplace")
 Mode = int(input("Please select the following options \n 1. Group Order \n 2. Buy/Sell\n"))
 program = Operation(Mode)
 program.printavailableinventory()
@@ -107,8 +115,11 @@ if Mode==1:
         program.printavailableinventory()
         print(Operation.Students)
     elif choice == 2:
-        
+        program.addtoinventory(item)
 elif Mode==2:
-    
+    choice = int(input("1. Post Item\n2.Buy Item"))
+    item = input("Please enter item name")
+    if choice == 1:
+        program.addtoinventory(item, Mode)
              
 
