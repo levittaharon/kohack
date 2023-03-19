@@ -124,7 +124,7 @@ tick()
 
 
 # create listbox object
-top = Tk()
+root = Tk()
 
 listbox = Listbox(top, height = 10,
                   width = 15,
