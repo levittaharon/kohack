@@ -22,7 +22,7 @@ b.pack(pady=50)
 
 
 # root window
-root = tk.Tk()
+
 root.geometry('1920x1080')
 root.title('KoHack GUI')
 
@@ -81,7 +81,7 @@ def tick():
 
 time1 = ''
 
-root = tk.Tk()
+
 root.title('Logging')
 
 # add frame in main window (root)
