@@ -11,7 +11,8 @@ class inventory:
         self.item_name = item_name #only necessary if specific item
         self.seller_name = seller_name
         self.mode = mode #bulk or individual
-        self.category = category 
+        
+        self.category = category #this shoud be a string containing "food", "ammenities" or "books"
         self.price = price
         self.time_left = time_left
         self.amount_left = amount_left
@@ -21,8 +22,34 @@ class inventory:
         #create a table in the student database that keeps track of the orders for each category
         con = sqlite3.connect("students.db")
         cur = con.cursor()
-        cur.execute("CREATE TABLE IF NOT EXISTS books(mode,item_name,seller_name,price,time_expire,info,student_list);")
-        cur.execute("CREATE TABLE IF NOT EXISTS food(mode,item_name,seller_name,price,time_expire,info,student_list);")
-        cur.execute("CREATE TABLE IF NOT EXISTS ammenities(mode,item_name,seller_name,price,time_expire,info,student_list);")
+        cur.execute("CREATE TABLE IF NOT EXISTS books(mode,item_name,seller_name,price,time_expire,amount_left,info,student_list);")
+        cur.execute("CREATE TABLE IF NOT EXISTS food(mode,item_name,seller_name,price,time_expire,amount_left,info,student_list);")
+        cur.execute("CREATE TABLE IF NOT EXISTS ammenities(mode,item_name,seller_name,price,time_expire,amount_left,info,student_list);")
+        con.close()
+    def add_item(self):
+        con = sqlite3.connect("students.db")
+        cur = con.cursor()
+        cur.execute(f"SELECT * FROM {self.category} WHERE item_name IS ? AND seller_name IS ?;",(self.item_name,self.seller_name))
+        check = cur.fetchall()
+        if len(check) == 0:
+            cur.execute(f"INSERT INTO {self.category} (mode,item_name,seller_name,price,time_expire,amount_left,info,student_list) VALUES (?,?,?,?,?,?,?,?);",(self.mode,self.item_name,self.seller_name,self.price,self.time_left,self.amount_left,self.info,self.student_list))
+        else:
+            return(False)
+        con.commit()
+        con.close
+    
+    def delete(self):
+        con = sqlite3.connect("students.db")
+        cur = con.cursor()
+        cur.execute(f"DELETE FROM {self.category} WHERE item_name IS ? AND seller_name IS ?;",(self.item_name,self.seller_name))
+        con.commit()
+        con.close
 
-     
+    
+
+
+
+        
+#these 2 lines are for testing only
+#instance = inventory("item_name","seller_name","mode","books","price","time_left","amount_expire","info","student_list")
+#instance.delete()
