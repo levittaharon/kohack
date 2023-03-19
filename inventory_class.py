@@ -45,9 +45,11 @@ class inventory:
         con.commit()
         con.close
 
+    
+
 
 
         
-
-instance = inventory("item_name","seller_name","mode","books","price","time_left","amount_expire","info","student_list")
-instance.delete()
+#these 2 lines are for testing only
+#instance = inventory("item_name","seller_name","mode","books","price","time_left","amount_expire","info","student_list")
+#instance.delete()
