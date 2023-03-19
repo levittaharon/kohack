@@ -2,8 +2,12 @@ import time
 import datetime
 import threading
 
+# Class to create instance of inventroy item. Respectively, the parameters are as follows:
+# 1. NAME: The name of the item, 2. HUMAN: the name of the organizer, 3. MODE: the mode (1 for bulk orders, 2 for used items), 
+# 4. CATEGORY: the category of the item (food, books, amenities), 5. STUDENTPRICE: the price per piece in bulk order, 6. DURATION: the duration until expiry of the offer in seconds, 
+# 7. AMOUNT: the amount of individual pieces remaining to be pruchased in order, 8. STOCK: In the case of used items, the amount of the item in stock, 9. INFO: More info on the object
 class Item():
-    def __init__(self, name, human, mode, category, studentprice, duration, amount, stock, info):
+    def __init__(self, name, human, mode, category, studentprice, duration, amount, stock, info, humanlist):
         print("New Item created")
         self.name = name
         self.category = category
@@ -14,21 +18,29 @@ class Item():
         self.info = info
         self.mode = mode
         self.human = human
+        self.humanlist = humanlist
         self.thread = threading.Thread(target=self.countdown)
         self.thread.start
     def countdown(self):
-        while self.duration>0:
+        self.timeleft = self.duration
+        for i in range(self.duration):
             time.sleep(1)
-            self.duration -=1
+            self.timeleft-=1
+        print("Item expired")
         
 
 #while Inventory["Pizza"].duration >0:
 #    print(Inventory["Pizza"].duration)
  
 class Operation:
-    Inventory = {"Pizza" : Item("Pizza", "Shloimy", 1, "food", "$2", 500, 1, 9, "Tel Aviv"),}
+    Students = {"John": ["613770", "j@F.com", "-8544-58-9234452", []]}
+    Inventory = {"Pizza" : Item("Pizza", "Shloimy", 1, "food", "$2", 500, 9, 1, "Tel Aviv Pizza Shop", ["Shloimy"]),}
     def __init__(self, mode):
         self.mode = int(mode)
+    def createnewuser(self, name, password):
+        email = input("Please enter Email: ")
+        phone = input("Please enter Phone: ")
+        Operation.Students[name]=[password, phone, email, []]
     def modedlistofstuff(self):
         self.modedinventory = {}
         for key, value in Operation.Inventory.items():
@@ -39,21 +51,42 @@ class Operation:
         inventory = self.modedlistofstuff()
         for key, value in inventory.items():  
             print(f"item: {key}, organizer: {value.human}, price you pay: {value.studentprice}, Expires in {value.duration} secs, contributions needed: {value.amount}, quantity of bulk: {value.stock}", "\n")
-    def inventoryactions(self):
-        choice = input("1. Join Order\n2. Create Order")
-        if choice == 1:
-            self.joinorder()
     def info(self, choice):
-        print(self.listofstuff()[choice].info)
-    def joinorder(self, choice):
-                self.confirmorder()
-    def confirmorder(self):
-        print("Ordered")
+        print(self.modedlistofstuff()[choice].info)
+    def joinorder(self, amount, choice):
+        if choice not in Operation.Inventory:
+            print("Item not found")
+        else:    
+            self.name = input("Please enter Name: ")
+            self.password = input("Please enter your password: ")
+            self.templist = self.modedlistofstuff()
+            for key, value in Operation.Students.items():
+                if self.name == key:
+                    if self.password==value:
+                        print("Order Joined")
+                        self.templist[choice].amount-=amount
+                        value[-1].append(choice)
+                        if self.templist[choice].amount==0:
+                            self.order(choice)
+                    else:
+                        print("Incorrect Password")
+                else:
+                    print("No such user, would you like to create one?")
+                    newchoice = int(input("1. yes, 2. no"))
+                    if newchoice==1:
+                        if self.createnewuser(self.name, self.password):
+                            print("Order Joined")
+                        self.templist[choice].amount-=1
+                        if self.templist[choice].amount==0:
+                            self.order(choice)
     def addtoinventory(self):
         name, human, mode, category, studentprice, duration, amount, stock, info =input("").split(", ")
         Operation.Inventory[name] = Item(name, human, mode, category, studentprice, duration, amount, stock, info)
-    def cancelorder(self):
+    def cancelorder(self, choice):
         print("ordercanceled")
+        del self.modedlistofstuff()[choice]
+    def order(self, choice):
+        print("Item ordered")
         
  
     
@@ -61,6 +94,11 @@ class Operation:
 Mode = input("Please select the following options \n 1. Group Order \n 2. Buy/Sell\n")
 program = Operation(Mode)
 program.printavailableinventory()
-program.inventoryactions()
+choice = int(input("1. Join Order\n2. Create Order"))
+if choice == 1:
+    item = input("Please enter item name")
+    amount = input("Please enter item amount")
+    program.joinorder(amount, item)
+    program.printavailableinventory()
              
 

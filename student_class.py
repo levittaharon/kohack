@@ -20,6 +20,7 @@ class student:
       try:
         cur.execute("INSERT INTO directory(name,password,email,phone) VALUES(?,?,?,?);",(self.name,self.password,email,phone))
         conn.commit()
+        return True
       except:
       #the only reason to get an error is if it is an invalid username since that is the specified data type
         print("invalid username")
@@ -27,6 +28,7 @@ class student:
     else:
       #if the password is "" then it is invalid this is from the init statement
       print("invalid password")
+      return False
     #close the cursor because it is good practice if it is unnecessary to have it open
     cur.close()
   
@@ -41,9 +43,11 @@ class student:
     result = cur.fetchall()
     if len(result)== 0: #if it doesn't find anything then len is 0
       print("bad login")
+      return False
     else:
       
       print(result)
+      return True
 
 hi = student("John", "Hi")
 hi.new_student("sk@sk.com",797966776)
