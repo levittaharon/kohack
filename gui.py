@@ -3,6 +3,7 @@ from tkinter.ttk import Label, Button
 from tkinter import *
 from tkinter import ttk 
 import tkinter as tk
+from tkinter.messagebox import showinfo
 root = Tk()
 root.title("Creating multiple windows")
 root.geometry("500x500")
@@ -11,44 +12,51 @@ def new_window():
     top = Toplevel()
     top.title("Second window")
     top.geometry("400x500")    # By default, it is kept as the geometry of the main window, but you can change it.
-    lab = Label(top, text="This is second window!")
+    lab = Label(top, text="order is in!")
     lab.pack(pady=20)
 
-l = Label(root, text="This is the first window")
+l = Label(root, text="tap confirm for order to go through")
 l.pack(pady=20)
 
-b = Button(root, text="Create new window", command=new_window)
+b = Button(root, text="Confirm", command=new_window)
 b.pack(pady=50)
 
 
-# root window
-
-root.geometry('1920x1080')
-root.title('KoHack GUI')
-
-
-# create a notebook
-notebook = ttk.Notebook(root)
-notebook.pack(pady=10, expand=True)
-
-
-# create frames
-frame1 = ttk.Frame(notebook, width=400, height=280)
-frame2 = ttk.Frame(notebook, width=400, height=280)
-frame3=ttk.Frame(notebook, width=400, height=280)
-
-
-frame1.pack(fill='both', expand=True)
-frame2.pack(fill='both', expand=True)
-frame3.pack(fill='both', expand=True)
-
-
-# add frames to notebook
-
-
-notebook.add(frame1, text='Amentities')
-notebook.add(frame2, text='Food')
-notebook.add(frame3, text='Books')
+class Window:
+    def __init__(self, master):
+        self.master = master
+ 
+        self.notebook = ttk.Notebook(self.master)
+ 
+        # Frame 1 and 2
+        frame1 = ttk.Frame(self.notebook)
+        frame2 = ttk.Frame(self.notebook)
+ 
+        label1 = ttk.Label(frame1, text = "Invetory,  Items left in stock, price $5")
+        label1.pack(pady = 20, padx = 10)
+        label2 = ttk.Label(frame2, text = "Item 3:3 left in stock")
+        label2.pack(pady = 15, padx = 10)
+ 
+        frame1.pack(fill= tk.BOTH, expand=True)
+        frame2.pack(fill= tk.BOTH, expand=True)
+ 
+        self.notebook.add(frame1, text = "Amenities")
+        self.notebook.add(frame2, text = "Food")
+ 
+        # Frame 3
+        frame3 = ttk.Frame(self.notebook)
+         
+        label3 = ttk.Label(frame3, text = "praying with fire, Gemera sukkah")
+        label3.pack(pady = 50, padx = 20)
+         
+        frame3.pack(fill= tk.BOTH, expand=True)
+ 
+        self.notebook.insert("end", frame3, text = "Books")
+        self.notebook.pack(padx = 5, pady = 5, expand = True)
+         
+ 
+root = tk.Tk()
+window = Window(root)
 
 
 import tkinter as tk
@@ -82,7 +90,7 @@ def tick():
 time1 = ''
 
 
-root.title('Logging')
+root.title('join')
 
 # add frame in main window (root)
 
@@ -104,11 +112,56 @@ tk.Label(root, text='Time logging').pack(side=tk.TOP, padx=100, pady=100)
 entry = tk.Entry(root, width=25)
 entry.pack(side=tk.TOP, padx=25, pady=25)
 
-tk.Button(root, text='Log Time', command=on_ok).pack(side=tk.LEFT)
-tk.Button(root, text='CLOSE', command=root.destroy).pack(side= tk.RIGHT)
+tk.Button(root, text='More info', command=on_ok).pack(side=tk.LEFT)
+tk.Button(root, text='Join', command=root.destroy).pack(side= tk.RIGHT)
 
 tick()
 
 # --- start ---
+
+
+# lists in GUI
+
+
+# create listbox object
+top = Tk()
+
+listbox = Listbox(top, height = 10,
+                  width = 15,
+                  bg = "black",
+                  activestyle = 'dotbox',
+                  font = "Helvetica",
+                  fg = "white")
+ 
+# Define the size of the window.
+top.geometry("300x250") 
+ 
+# Define a label for the list. 
+label = Label(top, text = "")
+ 
+# insert elements by their
+# index and names.
+listbox.insert(1, "Gemera")
+listbox.insert(2, "Learning ")
+listbox.insert(3, "schools")
+listbox.insert(4, "food")
+listbox.insert(5, "Freinds")
+ 
+# pack the widgets
+label.pack()
+listbox.pack()
+ 
+ 
+# Display until User
+# exits themselves.
+
+
+
+
+
+
+
+
+
 
 root.mainloop()
