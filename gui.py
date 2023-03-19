@@ -132,10 +132,10 @@ listbox = Listbox(root, height = 10,
                   fg = "white")
  
 # Define the size of the window.
-top.geometry("300x250") 
+root.geometry("300x250") 
  
 # Define a label for the list. 
-label = Label(top, text = "")
+label = Label(root, text = "")
  
 # insert elements by their
 # index and names.
