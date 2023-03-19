@@ -5,7 +5,7 @@ from tkinter import ttk
 import tkinter as tk
 from tkinter.messagebox import showinfo
 root = Tk()
-root.title("Creating multiple windows")
+root.title("Confirming Order")
 root.geometry("500x500")
 
 def new_window():
@@ -40,8 +40,8 @@ class Window:
         self.frame1.pack(fill= tk.BOTH, expand=True)
         self.frame2.pack(fill= tk.BOTH, expand=True)
  
-        self.notebook.add(self.frame1, text = "Amenities")
-        self.notebook.add(self.frame2, text = "Food")
+        self.notebook.add(self.frame1, text = "Bulk Orders")
+        self.notebook.add(self.frame2, text = "Used Market")
  
         # Frame 3
         self.frame3 = ttk.Frame(self.notebook)
@@ -51,7 +51,7 @@ class Window:
          
         self.frame3.pack(fill= tk.BOTH, expand=True)
  
-        self.notebook.insert("end", self.frame3, text = "Books")
+        self.notebook.insert("end", self.frame3, text = "Transportation")
         self.notebook.pack(padx = 5, pady = 5, expand = True)
          
  
@@ -90,7 +90,7 @@ def tick():
 time1 = ''
 
 
-root.title('join')
+root.title('KoHack GUI')
 
 # add frame in main window (root)
 
@@ -99,7 +99,7 @@ other.pack()
 
 # put widgets in frame (other)
 
-status = tk.Label(other, text="v1.0", bd=1, relief=tk.SUNKEN, anchor=tk.W)
+status = tk.Label(other, text="Skokie", bd=1, relief=tk.SUNKEN, anchor=tk.W)
 status.grid(row=10, column=10)
 
 clock = tk.Label(other, font=('times', 20, 'bold'), bg='green')
@@ -107,7 +107,7 @@ clock.grid(row=0, column=1)
 
 # put other widget directly in main widnow (root)
 
-tk.Label(root, text='Time logging').pack(side=tk.TOP, padx=100, pady=100)
+tk.Label(root, text='GUI KoHack 2023 ').pack(side=tk.TOP, padx=100, pady=100)
 
 entry = tk.Entry(root, width=25)
 entry.pack(side=tk.TOP, padx=25, pady=25)
@@ -117,41 +117,47 @@ tk.Button(root, text='Join', command=root.destroy).pack(side= tk.RIGHT)
 
 tick()
 
+
+  
+
+# scrolling
+
+  
+window = Tk()
+window.title('Multiple selection')
+  
+# for scrolling vertically
+yscrollbar = Scrollbar(window)
+yscrollbar.pack(side = RIGHT, fill = Y)
+  
+label = Label(window,
+              text = "Select the languages below :  ",
+              font = ("Times New Roman", 10), 
+              padx = 10, pady = 10)
+label.pack()
+list = Listbox(window, selectmode = "multiple", 
+               yscrollcommand = yscrollbar.set)
+  
+# Widget expands horizontally and 
+# vertically by assigning both to
+# fill option
+list.pack(padx = 10, pady = 10,
+          expand = YES, fill = "both")
+  
+x =['food', 'freinds', 'places']
+  
+for each_item in range(len(x)):
+      
+    list.insert(END, x[each_item])
+    list.itemconfig(each_item, bg = "lime")
+  
+# Attach listbox to vertical scrollbar
+yscrollbar.config(command = list.yview)
+window.mainloop()
+
 # --- start ---
 
 
-# lists in GUI
-
-
-# create listbox object
-listbox = Listbox(window.frame1, height = 10,
-                  width = 15,
-                  bg = "black",
-                  activestyle = 'dotbox',
-                  font = "Helvetica",
-                  fg = "white")
- 
-# Define the size of the window.
-#root.geometry("300x250") 
- 
-# Define a label for the list. 
-label = Label(window.frame1, text = "")
- 
-# insert elements by their
-# index and names.
-listbox.insert(1, "Gemera")
-listbox.insert(2, "Learning ")
-listbox.insert(3, "schools")
-listbox.insert(4, "food")
-listbox.insert(5, "Freinds")
- 
-# pack the widgets
-label.pack()
-listbox.pack()
- 
- 
-# Display until User
-# exits themselves.
 
 
 
