@@ -29,7 +29,7 @@ class inventory:
     def add_item(self):
         con = sqlite3.connect("students.db")
         cur = con.cursor()
-        cur.execute("SELECT FROM ? (item_name,seller_name) VALUES WHERE item_name is ? AND seller_name IS ?;",(self.category,self.item_name,self.seller_name))
+        cur.execute("SELECT * FROM ?  WHERE item_name IS ? AND seller_name IS ?;",(self.category,self.item_name,self.seller_name))
         check = cur.fetchall()
         if len(check) == 0:
             cur.execute("INSERT INTO ? (mode,item_name,seller_name,price,time_expire,amount_left,info,student_list) VALUES (?,?,?,?,?,?,?,?);",(self.category,self.mode,self.item_name,self.seller_name,self.price,self.time_expire,self.amount_left,self.info,self.student_list))
