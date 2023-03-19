@@ -29,10 +29,10 @@ class inventory:
     def add_item(self):
         con = sqlite3.connect("students.db")
         cur = con.cursor()
-        cur.execute("SELECT * FROM ?  WHERE item_name IS ? AND seller_name IS ?;",(self.category,self.item_name,self.seller_name))
+        cur.execute(f"SELECT * FROM {self.category} WHERE item_name IS ? AND seller_name IS ?;",(self.item_name,self.seller_name))
         check = cur.fetchall()
         if len(check) == 0:
-            cur.execute("INSERT INTO ? (mode,item_name,seller_name,price,time_expire,amount_left,info,student_list) VALUES (?,?,?,?,?,?,?,?);",(self.category,self.mode,self.item_name,self.seller_name,self.price,self.time_expire,self.amount_left,self.info,self.student_list))
+            cur.execute(f"INSERT INTO {self.category} (mode,item_name,seller_name,price,time_expire,amount_left,info,student_list) VALUES (?,?,?,?,?,?,?,?);",(self.mode,self.item_name,self.seller_name,self.price,self.time_left,self.amount_left,self.info,self.student_list))
         else:
             return(False)
         con.commit()
@@ -41,7 +41,7 @@ class inventory:
     def delete(self):
         con = sqlite3.connect("students.db")
         cur = con.cursor()
-        cur.execute("DELETE FROM ? WHERE item_name IS ? AND seller_name IS ?;",(self.category,self.item_name,self.seller_name))
+        cur.execute(f"DELETE FROM {self.category} WHERE item_name IS ? AND seller_name IS ?;",(self.item_name,self.seller_name))
         con.commit()
         con.close
 
@@ -50,4 +50,4 @@ class inventory:
         
 
 instance = inventory("item_name","seller_name","mode","books","price","time_left","amount_expire","info","student_list")
-instance.add_item()
+instance.delete()
