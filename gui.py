@@ -123,19 +123,18 @@ tick()
 # scrolling
 
   
-window = Tk()
-window.title('Multiple selection')
+#window.title('Multiple selection')
   
 # for scrolling vertically
-yscrollbar = Scrollbar(window)
+yscrollbar = Scrollbar(window.frame1)
 yscrollbar.pack(side = RIGHT, fill = Y)
   
-label = Label(window,
+label = Label(window.frame1,
               text = "Select the languages below :  ",
               font = ("Times New Roman", 10), 
               padx = 10, pady = 10)
 label.pack()
-list = Listbox(window, selectmode = "multiple", 
+list = Listbox(window.frame1, selectmode = "multiple", 
                yscrollcommand = yscrollbar.set)
   
 # Widget expands horizontally and 
@@ -153,7 +152,7 @@ for each_item in range(len(x)):
   
 # Attach listbox to vertical scrollbar
 yscrollbar.config(command = list.yview)
-window.mainloop()
+#window.mainloop()
 
 # --- start ---
 
