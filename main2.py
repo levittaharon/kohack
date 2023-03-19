@@ -94,16 +94,17 @@ class Operation:
  
     
 
-Mode = input("Please select the following options \n 1. Group Order \n 2. Buy/Sell\n")
+Mode = int(input("Please select the following options \n 1. Group Order \n 2. Buy/Sell\n"))
 program = Operation(Mode)
 program.printavailableinventory()
-choice = int(input("1. Join Order\n2. Create Order"))
-if choice == 1:
-    item = input("Please enter item name")
-    amount = input("Please enter item amount")
-    program.joinorder(amount, item)
-    print(Operation.Inventory)
-    program.printavailableinventory()
-    print(Operation.Students)
+if Mode==1:    
+    choice = int(input("1. Join Order\n2. Create Order"))
+    if choice == 1:
+        item = input("Please enter item name")
+        amount = input("Please enter item amount")
+        program.joinorder(amount, item)
+        print(Operation.Inventory)
+        program.printavailableinventory()
+        print(Operation.Students)
              
 
