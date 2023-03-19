@@ -49,4 +49,5 @@ class inventory:
 
         
 
-#instance = inventory("item_name","seller_name","mode","category","price","time_left","amount_expire","info","student_list")
+instance = inventory("item_name","seller_name","mode","books","price","time_left","amount_expire","info","student_list")
+instance.add_item()
