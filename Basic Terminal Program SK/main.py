@@ -29,24 +29,25 @@ class Operation:
     Inventory = {"Pizza" : Item("Pizza", "Shloimy", 1, "food", "$2", 500, 1, 9, "Tel Aviv"),}
     def __init__(self, mode):
         self.mode = int(mode)
-    def listofstuff(self):
+    def modedlistofstuff(self):
         self.modedinventory = {}
         for key, value in Operation.Inventory.items():
             if value.mode == self.mode:
                 self.modedinventory[key] = value
         return self.modedinventory
     def printavailableinventory(self):
-        inventory = self.listofstuff()
+        inventory = self.modedlistofstuff()
         for key, value in inventory.items():  
-            print(f"item: {key}, organizer: {value.human}, price you pay: {value.studentprice}, Expires in {value.duration} secs, contributions needed: {value.amount}, quantity of bulk: {value.stock}", "\n", "\n")
-    def choiceoptions(self):
-        choice = input("Enter item name of interest\n")
-        option = int(input("1. Info \n2.Order"))
-        if option ==1:   
-            print(self.listofstuff()[choice].info)
-        elif option ==2:
-            self.order()
-    def order(self):
+            print(f"item: {key}, organizer: {value.human}, price you pay: {value.studentprice}, Expires in {value.duration} secs, contributions needed: {value.amount}, quantity of bulk: {value.stock}", "\n")
+    def inventoryactions(self):
+        choice = input("1. Join Order\n2. Create Order")
+        if choice == 1:
+            self.joinorder()
+    def info(self, choice):
+        print(self.listofstuff()[choice].info)
+    def joinorder(self, choice):
+                self.confirmorder()
+    def confirmorder(self):
         print("Ordered")
     def addtoinventory(self):
         name, human, mode, category, studentprice, duration, amount, stock, info =input("").split(", ")
@@ -59,9 +60,7 @@ class Operation:
 
 Mode = input("Please select the following options \n 1. Group Order \n 2. Buy/Sell\n")
 program = Operation(Mode)
-print(program.listofstuff())
 program.printavailableinventory()
-print("\n")
-program.choiceoptions()
+program.inventoryactions()
              
 

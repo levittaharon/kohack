@@ -23,6 +23,7 @@ class student:
       except:
       #the only reason to get an error is if it is an invalid username since that is the specified data type
         print("invalid username")
+        return False
     else:
       #if the password is "" then it is invalid this is from the init statement
       print("invalid password")
@@ -44,3 +45,5 @@ class student:
       
       print(result)
 
+hi = student("John", "Hi")
+hi.new_student("sk@sk.com",797966776)
