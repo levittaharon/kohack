@@ -71,20 +71,21 @@ class Operation:
                         Operation.Inventory[choice].humanlist.append(self.name)
                         Operation.Students[self.name][-1].append(choice)
                         if self.templist[choice].amount==0:
-                            self.order(choice)
+                            self.order(choice, self.name)
+                        return True
                     else:
                         print("Incorrect Password")
-                else:
-                    print("No such user, would you like to create one?")
-                    newchoice = int(input("1. yes, 2. no"))
-                    if newchoice==1:
-                        if self.createnewuser(self.name, self.password):
-                            print("Order Joined")
-                            Operation.Inventory[choice].amount-=int(amount)
-                            Operation.Inventory[choice].humanlist.append(self.name)
-                            Operation.Students[self.name][-1].append(choice)
-                            if self.templist[choice].amount==0:
-                                self.order(choice)
+                        return False
+            print("No such user, would you like to create one?")
+            newchoice = int(input("1. yes, 2. no"))
+            if newchoice==1:
+                if self.createnewuser(self.name, self.password):
+                    print("Order Joined")
+                    Operation.Inventory[choice].amount-=int(amount)
+                    Operation.Inventory[choice].humanlist.append(self.name)
+                    Operation.Students[self.name][-1].append(choice)
+                    if self.templist[choice].amount==0:
+                        self.order(choice, self.name)
     def addtoinventory(self, item, Mode):
         self.item = item
         self.mode = Mode
@@ -94,9 +95,10 @@ class Operation:
     def cancelorder(self, choice):
         print("ordercanceled")
         del self.modedlistofstuff()[choice]
-    def order(self, choice):
+    def order(self, choice, name):
         print(f"{choice} ordered")
         del Operation.Inventory[choice]
+        Operation.Students[name][-1].remove(choice)
         
  
     
