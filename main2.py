@@ -99,12 +99,16 @@ program = Operation(Mode)
 program.printavailableinventory()
 if Mode==1:    
     choice = int(input("1. Join Order\n2. Create Order"))
+    item = input("Please enter item name")
     if choice == 1:
-        item = input("Please enter item name")
         amount = input("Please enter item amount")
         program.joinorder(amount, item)
         print(Operation.Inventory)
         program.printavailableinventory()
         print(Operation.Students)
+    elif choice == 2:
+        
+elif Mode==2:
+    
              
 
