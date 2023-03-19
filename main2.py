@@ -1,11 +1,13 @@
 import time
 import datetime
 import threading
+import student_class
 
 # Class to create instance of inventroy item. Respectively, the parameters are as follows:
 # 1. NAME: The name of the item, 2. HUMAN: the name of the organizer, 3. MODE: the mode (1 for bulk orders, 2 for used items), 
 # 4. CATEGORY: the category of the item (food, books, amenities), 5. STUDENTPRICE: the price per piece in bulk order, 6. DURATION: the duration until expiry of the offer in seconds, 
 # 7. AMOUNT: the amount of individual pieces remaining to be pruchased in order, 8. STOCK: In the case of used items, the amount of the item in stock, 9. INFO: More info on the object
+# 10. HUMANLIST: list of participating students
 class Item():
     def __init__(self, name, human, mode, category, studentprice, duration, amount, stock, info, humanlist):
         print("New Item created")
