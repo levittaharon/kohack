@@ -16,6 +16,8 @@ class Window:
         # Frame 1 and 2
         self.frame1 = ttk.Frame(self.notebook)
         self.frame2 = ttk.Frame(self.notebook)
+       
+       
         self.label1 = ttk.Label(self.frame1, text = "")
         self.label1.pack(pady = 10, padx = 10)
         self.label2 = ttk.Label(self.frame2, text = "")
@@ -27,36 +29,40 @@ class Window:
  
         self.notebook.add(self.frame1, text = "Bulk Orders")
         self.notebook.add(self.frame2, text = "Used Market")
+       
+
  
         # Frame 3 and 4
         self.frame3 = ttk.Frame(self.notebook)
-         
+        self.frame4 = ttk.Frame(self.notebook)
         self.label3 = ttk.Label(self.frame3, text = "")
         self.label3.pack(pady = 10, padx = 10)
          
         self.frame3.pack(fill= tk.BOTH, expand=True)
+        self.frame4.pack(fill=tk.BOTH, expand=True)
  
         self.notebook.insert("end", self.frame3, text = "Transportation")
         self.notebook.pack(padx = 5, pady = 5, expand = True)
 
+        self.notebook.insert('end', self.frame4, text = 'test')
+        self.notebook.pack(padx = 5, pady = 5, expand = True)
 
-         
 
+
+
+
+      
 
 
  
 root = tk.Tk()
 window = Window(root)
 
-#test
-
-        
 
 
 import tkinter as tk
 import time
 
-# --- functions ---
 
 def on_ok():
     x, y = entry.get().split('x')
@@ -108,6 +114,12 @@ entry.pack(side=tk.TOP, padx=25, pady=25)
 
 tk.Button(root, text='More info', command=on_ok).pack(side=tk.LEFT)
 tk.Button(root, text='Quit', command=root.destroy).pack(side= tk.RIGHT)
+
+
+
+
+
+
 
 tick()
 
@@ -256,12 +268,6 @@ label.pack()
 
 
 
-# This will import all the widgets
-# and modules which are available in
-# tkinter and ttk module
-from tkinter import *
-from tkinter.ttk import *
- 
 # creates a Tk() object
 master = Tk()
  
@@ -289,7 +295,7 @@ def openNewWindow():
           text ="This is a new window").pack()
  
  
-label = Label(master,
+label = Label(
               text ="This is the main window")
  
 label.pack(pady = 10)
@@ -303,6 +309,7 @@ btn.pack(pady = 10)
  
 # mainloop, runs infinitely
 mainloop()
+
 
 
 
