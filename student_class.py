@@ -48,11 +48,3 @@ class student:
       
       print(result)
       return True
-
-  
-
-  def update_student(self):
-    pass
-#test
-#john = student("john","goodpass")
-#john.new_student("email",773)
