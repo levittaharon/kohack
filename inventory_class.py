@@ -66,7 +66,8 @@ class inventory:
         cur.execute(f"SELECT item_name,amount_left,student_list FROM {self.category} WHERE item_name IS ? and seller_name IS ?;",(self.item_name,self.seller_name))
         info_list = cur.fetchall()
         info_list = list(info_list)
-        new_stock = info_list[0,1] -amount #get rid of ordered item from stock
+        info_list = info_list[0]
+        new_stock = info_list[1] -amount #get rid of ordered item from stock
         cur.execute(f"UPDATE {self.category} SET amount_left = ? WHERE item_name IS ? and seller_name IS ?;",(new_stock,self.item_name,self.seller_name))
         con.close()
         catalogue.send_notification(info_list)
