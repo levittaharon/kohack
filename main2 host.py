@@ -3,6 +3,7 @@ import threading
 import requests #pip install requests
 from bs4 import BeautifulSoup #pip install bs4
 import socket
+from inventory_class import inventory
 from student_class import student
 from catalogue_class import *
 
@@ -118,6 +119,7 @@ class Operation():
     #Inventory of items contains keys which are the names of the item, and an isntance of an item class as their value
     Inventory = {"Pizza" : Item("Pizza", "Shloimy", 1, "Food", "$2", 500, 9, 1, "Tel Aviv Pizza Shop", ["Shloimy"]), 
                  "Hotdogs" : Item("Hotdogs", "John", 1, "Food", "$1", 500, 12, 1, "Walmart", ["John"])}
+    
     
     
     #The constructor takes in the mode, digit 1 for bulk orders, and the digit 2 for buing/selling
@@ -251,6 +253,8 @@ class Operation():
         return categors
             
 while True:
+    for key, value in Operation.Inventory.items():
+        (inventory(value.name, value.human, value.mode, value.category, value.studentprice, value.duration, value.stock, value.info, value.humanlist)).order(value.amount()) 
     send(str(Operation.Students))
     send(str(Operation.Inventory))
     send("Welcome to the Yeshiva Marketplace\nPlease select the following options: \n 1. Group Order \n 2. Buy/Sell\n 3.Currency Converter\n")
@@ -291,6 +295,9 @@ while True:
     for key, value in Operation.Inventory.items():
         if value.duration == 0:
             del Operation.Inventory[key]
-    catalogue.update_student(Operation.Students)    
+    catalogue.update_student(Operation.Students)   
+    for key, value in Operation.Inventory:
+        (inventory(value.name, value.human, value.mode, value.category, value.studentprice, value.duration, value.amount_left, value.info, value.humanlist)).order(value.amount()) 
              
 
+name, human, mode, category, studentprice, duration, amount, stock, info, humanlist
