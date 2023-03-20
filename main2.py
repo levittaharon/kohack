@@ -207,12 +207,18 @@ class Operation():
                 del Operation.Inventory[self.choice]  
                 #Operation.Students[self.name][-1].remove(self.choice)
                 print(f"{self.choice} purchased!\n")
+    def categories():
+        categors = []
+        for key, value in Operation.Inventory.items():
+            if value.category not in categors:
+                categors.append(value.category)
+        return categors
             
 while True:
     print("Welcome to the Yeshiva Marketplace")
     Mode = int(input("Please select the following options: \n 1. Group Order \n 2. Buy/Sell\n 3.Currency Converter\n"))
     if Mode==1 or Mode==2:    
-        category=  input("Please enter one of the following categories: Food, Amenities, Books/Sefarim\n")
+        category=  input(f"Please enter one of the following categories: {Operation.categories()}")
         program = Operation(Mode, category)
         program.printavailableinventory()
     if Mode==1:    
