@@ -7,7 +7,7 @@ from student_class import student
 from catalogue_class import *
 
 
-student("John", "613770").new_student("gdsgf@dsf.com", "42352356423")
+student("John", "61377000").new_student("gdsgf@dsf.com", "42352356423")
       
 host = "192.168.60.90"
 port = 55555
