@@ -21,7 +21,7 @@ class inventory:
         self.time_left = time_left
         self.amount_left = amount_left
         self.info = info
-        self.student_list = student_list
+        self.student_list = str(student_list)
 
         #create a table in the student database that keeps track of the orders for each category
         con = sqlite3.connect("students.db")
