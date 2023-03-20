@@ -14,6 +14,8 @@ from tkinter.messagebox import showinfo
     #intialize frame1 with name i
     #tabs.append(i)
 
+
+
 class Window:
     def __init__(self, master):
         self.master = master
@@ -53,36 +55,13 @@ class Window:
         self.notebook.insert("end", self.frame3, text = "Transportation")
         self.notebook.pack(padx = 5, pady = 5, expand = True)
 
-        self.notebook.insert('end', self.frame4, text = 'test')
+        self.notebook.insert('end', self.frame4, text = 'Other')
         self.notebook.pack(padx = 10, pady = 20, expand = True)
+        
 
 
-        #import tkinter and ttk modules
-from tkinter import *
-from tkinter import ttk
+#frame in frame
 
-#Make the root widget
-root = Tk()
-
-#Make the first notebook
-program = ttk.Notebook(root) #Create the program notebook
-program.pack()
-
-#Make the terms frames for the program notebook
-for r in range(1,4):
-    termName = 'Term'+str(r) #concatenate term name(will come from dict)
-    term = Frame(program)   #create frame widget to go in program nb
-    program.add(term, text=termName)# add the newly created frame widget to the program notebook
-    nbName=termName+'courses'#concatenate notebook name for each iter
-    nbName = ttk.Notebook(term)#Create the notebooks to go in each of the terms frames
-    nbName.pack()#pack the notebook
-
-    for a in range (1,6):
-        courseName = termName+"Course"+str(a)#concatenate coursename(will come from dict)
-        course = Frame(nbName) #Create a course frame for the newly created term frame for each iter
-        nbName.add(course, text=courseName)#add the course frame to the new notebook 
-
-root.mainloop()
 
 
 #----------------------------------------------------------------------
@@ -158,6 +137,49 @@ tk.Button(root, text='Quit', command=root.destroy).pack(side= tk.RIGHT)
 
 
 #=================================================================================
+
+
+#attempt
+master = Tk()
+ 
+# this will create a label widget
+l1 = Label(master, text = "Height")
+l2 = Label(master, text = "Width")
+ 
+# grid method to arrange labels in respective
+# rows and columns as specified
+l1.grid(row = 0, column = 0, sticky = W, pady = 2)
+l2.grid(row = 1, column = 0, sticky = W, pady = 2)
+ 
+# entry widgets, used to take entry from user
+e1 = Entry(master)
+e2 = Entry(master)
+ 
+# this will arrange entry widgets
+e1.grid(row = 0, column = 1, pady = 2)
+e2.grid(row = 1, column = 1, pady = 2)
+ 
+# checkbutton widget
+c1 = Checkbutton(master, text = "Preserve")
+c1.grid(row = 2, column = 0, sticky = W, columnspan = 2)
+ 
+
+ 
+
+ 
+# button widget
+b1 = Button(master, text = "Zoom in")
+b2 = Button(master, text = "Zoom out")
+ 
+# arranging button widgets
+b1.grid(row = 2, column = 2, sticky = E)
+b2.grid(row = 2, column = 3, sticky = E)
+ 
+# infinite loop which can be terminated
+# by keyboard or mouse interrupt
+
+
+
 
 
 
@@ -266,10 +288,46 @@ yscrollbar.config(command = list.yview)
 #window.mainloop()
 
 
+
+
+
+
+
+
+
+
+# for scrolling vertically for frame4
+yscrollbar = Scrollbar(window.frame4)
+yscrollbar.pack(side = RIGHT, fill = Y)
+  
+label = Label(window.frame4,
+              text = "Select Below",
+              font = ("Times New Roman", 10), 
+              padx = 5, pady = 10)
+label.pack()
+list = Listbox(window.frame4, selectmode = "multiple", 
+               yscrollcommand = yscrollbar.set)
+  
+# Widget expands horizontally and 
+# vertically by assigning both to
+# fill option
+list.pack(padx = 10, pady = 10,
+          expand = YES, fill = "both")
+  
+x =['other', 'other things', 'stuff']
+  
+for each_item in range(len(x)):
+      
+    list.insert(END, x[each_item])
+    list.itemconfig(each_item, bg = "white")
+  
+# Attach listbox to vertical scrollbar
+yscrollbar.config(command = list.yview)
+#window.mainloop()
 #=======================================================================================
 
 
-#notebook in a notebook
+
 
 def show():
     label.config( text = clicked.get() )
@@ -311,45 +369,7 @@ label.pack()
 
 
 
-# creating main tkinter window/toplevel
-master = Tk()
- 
-# this will create a label widget
-l1 = Label(master, text = "Height")
-l2 = Label(master, text = "Width")
- 
-# grid method to arrange labels in respective
-# rows and columns as specified
-l1.grid(row = 0, column = 0, sticky = W, pady = 2)
-l2.grid(row = 1, column = 0, sticky = W, pady = 2)
- 
-# entry widgets, used to take entry from user
-e1 = Entry(master)
-e2 = Entry(master)
- 
-# this will arrange entry widgets
-e1.grid(row = 0, column = 1, pady = 2)
-e2.grid(row = 1, column = 1, pady = 2)
- 
-# checkbutton widget
-c1 = Checkbutton(master, text = "Preserve")
-c1.grid(row = 2, column = 0, sticky = W, columnspan = 2)
- 
 
- 
-
- 
-# button widget
-b1 = Button(master, text = "Zoom in")
-b2 = Button(master, text = "Zoom out")
- 
-# arranging button widgets
-b1.grid(row = 2, column = 2, sticky = E)
-b2.grid(row = 2, column = 3, sticky = E)
- 
-# infinite loop which can be terminated
-# by keyboard or mouse interrupt
-mainloop()
 
 
 
