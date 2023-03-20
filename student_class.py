@@ -23,11 +23,11 @@ class student:
         return True
       except:
       #the only reason to get an error is if it is an invalid username since that is the specified data type
-        print("invalid username")
+        #print("invalid username")
         return False
     else:
       #if the password is "" then it is invalid this is from the init statement
-      print("invalid password")
+      #print("invalid password")
       return False
     #close the cursor because it is good practice if it is unnecessary to have it open
     cur.close()
