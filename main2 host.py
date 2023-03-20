@@ -17,13 +17,14 @@ port = 55555
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)#AF_INET: internet socket, #SOCK_STREAM: TCP protocol
 server.bind((host, port))
 server.listen()
-
+#Accepts connection details from client
 client, address = server.accept()
-
+#send message to client to connect server
 client.send("Connected to server!".encode("utf-8"))
-
+#Recieves input from client
 def receive():
     return(client.recv(1024).decode("utf-8"))
+#Sends message to client
 def send(message):
     client.send(message.encode("utf-8"))
 send("Connected with {}".format(str(address)))
@@ -222,6 +223,7 @@ class Operation():
         self.category =category
         self.mode = Mode
         if self.uservalidation():
+            #Prompts user to enter values for each of the parameters below
             send("Please enter price: ")
             self.studentprice = receive()
             send("Please enter duration until expiry: ")
