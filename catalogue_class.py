@@ -1,5 +1,5 @@
 import sqlite3
-
+from student_class import student
 class catalogue:
     def __init__(self):
         pass
@@ -41,7 +41,7 @@ class catalogue:
                 i[5] = list(i[5])
             dictionary[i[0]] = [i[1],i[2],i[3],i[5]] #this coresponds to name = [password,email,phone,orders_part_of]
 
-        #print(dictionary)
+        print(dictionary)
         return(dictionary)
 
       #this will take in a dictionary and update the db
@@ -63,7 +63,9 @@ class catalogue:
             if len(check) != 0: #if student exists
                 cur.execute("UPDATE directory SET orders_part_of = ? WHERE name is ?",(orders,key)) #key is the name
             else:
-                cur.execute("INSERT INTO directory (name,password,email,phone,orders_part_of) VALUES (?,?,?,?,?) ",(key,password,email,phone,orders)) #key is the name
+                #create new instance of student do it this way to validate the password
+                student(key,password).new_student(email,phone)
+                cur.execute("UPDATE directory SET orders_part_of = ? WHERE name is ?;",(orders,key)) #key is the name
             con.commit()
             con.close()
 
