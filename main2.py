@@ -43,11 +43,13 @@ class Operation:
     Students = {"John": ["613770", "j@F.com", "-8544-58-9234452", []], "Johannes": ["hi", "hi@F.com", "-8544-58-9234452", []]}
     
     #Inventory of items contains keys which are the names of the item, and an isntance of an item class as their value
-    Inventory = {"Pizza" : Item("Pizza", "Shloimy", 1, "food", "$2", 500, 9, 1, "Tel Aviv Pizza Shop", ["Shloimy"]),}
+    Inventory = {"Pizza" : Item("Pizza", "Shloimy", 1, "Food", "$2", 500, 9, 1, "Tel Aviv Pizza Shop", ["Shloimy"]), 
+                 "Hotdogs" : Item("Pizza", "John", 1, "Food", "$1", 500, 12, 1, "Walmart", ["John"])}
     
     #The constructor takes in the mode, digit 1 for bulk orders, and the digit 2 for buing/selling
-    def __init__(self, mode):
+    def __init__(self, mode, category):
         self.mode = int(mode)
+        self.category = category
     
     #This function creates a new user
     def createnewuser(self, name, password):
@@ -63,7 +65,7 @@ class Operation:
         for key, value in Operation.Inventory.items():
             #for every Item class instance in the inventory, if its mode is equal to this class mode, the Items are added to a Dictionary with their names as the key.
             #The function returns a dictionary
-            if value.mode == self.mode:
+            if value.mode == self.mode and value.category==self.category:
                 self.modedinventory[key] = value
         return self.modedinventory
     
@@ -81,6 +83,10 @@ class Operation:
     def joinorder(self, amount, choice):
         if choice not in Operation.Inventory:
             print("Item not found")
+            self.newchoice = int(input("Would you like to create an order?\n1. Yes, 2.No"))
+            if self.newchoice==1:
+                self.addtoinventory(choice, self.mode, self.category)
+            
         else:    
             #Validates the user
             self.name = input("Please enter Name: ")
@@ -118,17 +124,28 @@ class Operation:
                         self.order(choice, self.name)
     
     
-    def addtoinventory(self, item, Mode):
+    def addtoinventory(self, item, Mode, category):
         self.item = item
+        self.category =category
         self.mode = Mode
         self.human = input("Please enter your name:")
         self.password = input("Please enter your password:")
         for key, value in Operation.Students.items():
             if self.human == key:
                 if self.password==value[0]:
-                    self.category, self.studentprice, self.duration, self.amount, self.stock, self.info =input("").split(", ")
+                    self.studentprice, self.duration, self.amount, self.stock, self.info =input("").split(", ")
                     Operation.Inventory[self.item] = Item(self.item, self.human, self.mode, self.category, self.studentprice, self.duration, self.amount, self.stock, self.info, [self.human])
-
+                    return True
+                else:
+                    print("Incorrect Password")
+                    return False
+            print("No such user, would you like to create one?")
+            newchoice = int(input("1. yes, 2. no"))
+            if newchoice==1:
+                if self.createnewuser(self.name, self.password):
+                    self.studentprice, self.duration, self.amount, self.stock, self.info =input("").split(", ")
+                    Operation.Inventory[self.item] = Item(self.item, self.human, self.mode, self.category, self.studentprice, self.duration, self.amount, self.stock, self.info, [self.human])
+                    return True        
     def cancelorder(self, choice):
         print("ordercanceled")
         del self.modedlistofstuff()[choice]
@@ -142,7 +159,8 @@ class Operation:
 
 print("Welcome to the Yeshiva Marketplace")
 Mode = int(input("Please select the following options \n 1. Group Order \n 2. Buy/Sell\n"))
-program = Operation(Mode)
+category=  input("Please enter one of the following categories: Food, Amenities, Books/Sefarim\n")
+program = Operation(Mode, category)
 program.printavailableinventory()
 if Mode==1:    
     choice = int(input("1. Join Order\n2. Create Order"))
@@ -154,7 +172,7 @@ if Mode==1:
         program.printavailableinventory()
         print(Operation.Students)
     elif choice == 2:
-        program.addtoinventory(item, Mode)
+        program.addtoinventory(item, Mode, category)
 elif Mode==2:
     choice = int(input("1. Post Item\n2.Buy Item"))
     item = input("Please enter item name")

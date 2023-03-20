@@ -165,30 +165,19 @@ list.pack(padx = 10, pady = 10,
   
 x =['Computers', 'Cars', 'Tablets', 'Phones']
   
-for each_item in range(len(x)):
-      
-    list.insert(END, x[each_item])
-    list.itemconfig(each_item, bg = "white")
+window = Tk()
+window.title('Multiple selection')
   
-# Attach listbox to vertical scrollbar
-yscrollbar.config(command = list.yview)
-#window.mainloop()
-
-
-
-
-
-
-# for scrolling vertically for frame3
-yscrollbar = Scrollbar(window.frame3)
+# for scrolling vertically
+yscrollbar = Scrollbar(window)
 yscrollbar.pack(side = RIGHT, fill = Y)
   
-label = Label(window.frame3,
-              text = "Select Below",
+label = Label(window,
+              text = "Select the languages below :  ",
               font = ("Times New Roman", 10), 
               padx = 10, pady = 10)
 label.pack()
-list = Listbox(window.frame3, selectmode = "multiple", 
+list = Listbox(window, selectmode = "multiple", 
                yscrollcommand = yscrollbar.set)
   
 # Widget expands horizontally and 
@@ -206,7 +195,9 @@ for each_item in range(len(x)):
   
 # Attach listbox to vertical scrollbar
 yscrollbar.config(command = list.yview)
-#window.mainloop()
+window.mainloop()
+
+# --- start ---
 
 
 
