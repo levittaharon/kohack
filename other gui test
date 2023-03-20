@@ -3,15 +3,21 @@ from tkinter import *
 from tkinter import ttk
 
 #Make the root widget
-root = Tk()
+root= Tk()
 
 #Make the first notebook
 program = ttk.Notebook(root) #Create the program notebook
 program.pack()
 
+
+
+
 #Make the terms frames for the program notebook
 for r in range(1,4):
-    termName = 'Term'+str(r) #concatenate term name(will come from dict)
+    termName = 'Bulk'+str(r) #concatenate term name(will come from dict)
+  
+    
+    
     term = Frame(program)   #create frame widget to go in program nb
     program.add(term, text=termName)# add the newly created frame widget to the program notebook
     nbName=termName+'courses'#concatenate notebook name for each iter
