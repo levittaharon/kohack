@@ -6,7 +6,7 @@ import requests #pip install requests
 from bs4 import BeautifulSoup #pip install bs4
 import socket    
         
-host = "10.26.203.103"
+host = "192.168.60.90"
 port = 55555
 
 #Starting server
@@ -15,7 +15,6 @@ server.bind((host, port))
 server.listen()
 
 client, address = server.accept()
-send("Connected with {}".format(str(address)))
 
 client.send("Connected to server!".encode("ascii"))
 
@@ -23,6 +22,7 @@ def receive():
     input = client.recv(1024)
 def send(message):
     client.send(message)
+send("Connected with {}".format(str(address)))
 
 
 #The function needs 3 parameters, all for integer values. 
