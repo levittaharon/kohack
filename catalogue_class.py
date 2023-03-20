@@ -10,15 +10,20 @@ class catalogue:
             con = sqlite3.connect("students.db")
             cur = con.cursor()
             cur.execute(f"SELECT * FROM {category} WHERE mode IS True;")
-            check = cur.fetchall()
+            check = list(cur.fetchall())
+            final = []
+            for i in check:
+                i =list(i)
+                final.append(i)
             if len(check) == 0:
-                print("nothing at this moment")
+                #print("nothing at this moment")
+                #false means means nothing in db
                 return(False)
                 
             else:
-                print("success")
-                print(check)
-                return(check)
+                #print("success")
+                #print(final)
+                return(final)
         except:
             #this return statement would equate to a no inventory found message
             print("error")
