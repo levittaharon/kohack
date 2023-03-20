@@ -254,7 +254,7 @@ class Operation():
             
 while True:
     for key, value in Operation.Inventory.items():
-        (inventory(value.name, value.human, value.mode, value.category, value.studentprice, value.duration, value.stock, value.info, value.humanlist)).order(value.amount()) 
+        (inventory(value.name, value.human, value.mode, value.category, value.studentprice, str(value.duration), value.stock, value.info, value.humanlist)).order(value.amount) 
     send(str(Operation.Students))
     send(str(Operation.Inventory))
     send("Welcome to the Yeshiva Marketplace\nPlease select the following options: \n 1. Group Order \n 2. Buy/Sell\n 3.Currency Converter\n")
