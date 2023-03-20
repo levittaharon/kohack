@@ -63,6 +63,7 @@ class inventory:
         info_list = list(info_list)
         new_stock = info_list[1] -amount #get rid of ordered item from stock
         cur.execute(f"UPDATE {self.category} SET amount_left = ? WHERE item_name IS ? and seller_name IS ?;",(new_stock,self.item_name,self.seller_name))
+        con.close()
         catalogue.send_notification(info_list)
 
         
