@@ -1,78 +1,166 @@
-from tkinter import *
-from tkinter.colorchooser import askcolor
+import tkinter
+import tkinter.messagebox
+import customtkinter
+
+customtkinter.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
+customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
 
 
-class Paint(object):
-
-    DEFAULT_PEN_SIZE = 5.0
-    DEFAULT_COLOR = 'black'
-
+class App(customtkinter.CTk):
     def __init__(self):
-        self.root = Tk()
+        super().__init__()
 
-        self.pen_button = Button(self.root, text='pen', command=self.use_pen)
-        self.pen_button.grid(row=0, column=0)
+        # configure window
+        self.title('KoHack GUI')
+        self.geometry(f"{1100}x{580}")
 
-        self.brush_button = Button(self.root, text='brush', command=self.use_brush)
-        self.brush_button.grid(row=0, column=1)
+        # configure grid layout (4x4)
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_columnconfigure((2, 3), weight=0)
+        self.grid_rowconfigure((0, 1, 2), weight=1)
 
-        self.color_button = Button(self.root, text='color', command=self.choose_color)
-        self.color_button.grid(row=0, column=2)
+        # create sidebar frame with widgets
+        self.sidebar_frame = customtkinter.CTkFrame(self, width=140, corner_radius=0)
+        self.sidebar_frame.grid(row=0, column=0, rowspan=4, sticky="nsew")
+        self.sidebar_frame.grid_rowconfigure(4, weight=1)
+        self.logo_label = customtkinter.CTkLabel(self.sidebar_frame, text="KoHack GUI", font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
+        self.sidebar_button_1 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
+        self.sidebar_button_1.grid(row=1, column=0, padx=20, pady=10)
+        self.sidebar_button_2 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
+        self.sidebar_button_2.grid(row=2, column=0, padx=20, pady=10)
+        self.sidebar_button_3 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
+        self.sidebar_button_3.grid(row=3, column=0, padx=20, pady=10)
+        self.appearance_mode_label = customtkinter.CTkLabel(self.sidebar_frame, text="Appearance Mode:", anchor="w")
+        self.appearance_mode_label.grid(row=5, column=0, padx=20, pady=(10, 0))
+        self.appearance_mode_optionemenu = customtkinter.CTkOptionMenu(self.sidebar_frame, values=["Light", "Dark", "System"],
+                                                                       command=self.change_appearance_mode_event)
+        self.appearance_mode_optionemenu.grid(row=6, column=0, padx=20, pady=(10, 10))
+        self.scaling_label = customtkinter.CTkLabel(self.sidebar_frame, text="UI Scaling:", anchor="w")
+        self.scaling_label.grid(row=7, column=0, padx=20, pady=(10, 0))
+        self.scaling_optionemenu = customtkinter.CTkOptionMenu(self.sidebar_frame, values=["80%", "90%", "100%", "110%", "120%"],
+                                                               command=self.change_scaling_event)
+        self.scaling_optionemenu.grid(row=8, column=0, padx=20, pady=(10, 20))
 
-        self.eraser_button = Button(self.root, text='eraser', command=self.use_eraser)
-        self.eraser_button.grid(row=0, column=3)
+        # create main entry and button
+        self.entry = customtkinter.CTkEntry(self, placeholder_text="CTkEntry")
+        self.entry.grid(row=3, column=1, columnspan=2, padx=(20, 0), pady=(20, 20), sticky="nsew")
 
-        self.choose_size_button = Scale(self.root, from_=1, to=10, orient=HORIZONTAL)
-        self.choose_size_button.grid(row=0, column=4)
+        self.main_button_1 = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"))
+        self.main_button_1.grid(row=3, column=3, padx=(20, 20), pady=(20, 20), sticky="nsew")
 
-        self.c = Canvas(self.root, bg='white', width=600, height=600)
-        self.c.grid(row=1, columnspan=5)
+        # create textbox
+        self.textbox = customtkinter.CTkTextbox(self, width=250)
+        self.textbox.grid(row=0, column=1, padx=(20, 0), pady=(20, 0), sticky="nsew")
 
-        self.setup()
-        self.root.mainloop()
+        # create tabview
+        self.tabview = customtkinter.CTkTabview(self, width=250)
+        self.tabview.grid(row=0, column=2, padx=(20, 0), pady=(20, 0), sticky="nsew")
+        self.tabview.add("CTkTabview")
+        self.tabview.add("Tab 2")
+        self.tabview.add("Tab 3")
+        self.tabview.tab("CTkTabview").grid_columnconfigure(0, weight=1)  # configure grid of individual tabs
+        self.tabview.tab("Tab 2").grid_columnconfigure(0, weight=1)
 
-    def setup(self):
-        self.old_x = None
-        self.old_y = None
-        self.line_width = self.choose_size_button.get()
-        self.color = self.DEFAULT_COLOR
-        self.eraser_on = False
-        self.active_button = self.pen_button
-        self.c.bind('<B1-Motion>', self.paint)
-        self.c.bind('<ButtonRelease-1>', self.reset)
+        self.optionmenu_1 = customtkinter.CTkOptionMenu(self.tabview.tab("CTkTabview"), dynamic_resizing=False,
+                                                        values=["1", "2", "3"])
+        self.optionmenu_1.grid(row=0, column=0, padx=20, pady=(20, 10))
+        self.combobox_1 = customtkinter.CTkComboBox(self.tabview.tab("CTkTabview"),
+                                                    values=["USA", "CAD", "GPP", "ILS"])
+        self.combobox_1.grid(row=1, column=0, padx=20, pady=(10, 10))
+        self.string_input_button = customtkinter.CTkButton(self.tabview.tab("CTkTabview"), text="Confirm?",
+                                                           command=self.open_input_dialog_event)
+        self.string_input_button.grid(row=2, column=0, padx=20, pady=(10, 10))
+        self.label_tab_2 = customtkinter.CTkLabel(self.tabview.tab("Tab 2"), text="CTkLabel on Tab 2")
+        self.label_tab_2.grid(row=0, column=0, padx=20, pady=20)
 
-    def use_pen(self):
-        self.activate_button(self.pen_button)
+        # create radiobutton frame
+        self.radiobutton_frame = customtkinter.CTkFrame(self)
+        self.radiobutton_frame.grid(row=0, column=3, padx=(20, 20), pady=(20, 0), sticky="nsew")
+        self.radio_var = tkinter.IntVar(value=0)
+        self.label_radio_group = customtkinter.CTkLabel(master=self.radiobutton_frame, text="WIP")
+        self.label_radio_group.grid(row=0, column=2, columnspan=1, padx=10, pady=10, sticky="")
+        self.radio_button_1 = customtkinter.CTkRadioButton(master=self.radiobutton_frame, variable=self.radio_var, value=0)
+        self.radio_button_1.grid(row=1, column=2, pady=10, padx=20, sticky="n")
+        self.radio_button_2 = customtkinter.CTkRadioButton(master=self.radiobutton_frame, variable=self.radio_var, value=1)
+        self.radio_button_2.grid(row=2, column=2, pady=10, padx=20, sticky="n")
+        self.radio_button_3 = customtkinter.CTkRadioButton(master=self.radiobutton_frame, variable=self.radio_var, value=2)
+        self.radio_button_3.grid(row=3, column=2, pady=10, padx=20, sticky="n")
 
-    def use_brush(self):
-        self.activate_button(self.brush_button)
+        # create slider and progressbar frame
+        self.slider_progressbar_frame = customtkinter.CTkFrame(self, fg_color="transparent")
+        self.slider_progressbar_frame.grid(row=1, column=1, padx=(20, 0), pady=(20, 0), sticky="nsew")
+        self.slider_progressbar_frame.grid_columnconfigure(0, weight=1)
+        self.slider_progressbar_frame.grid_rowconfigure(4, weight=1)
+        self.seg_button_1 = customtkinter.CTkSegmentedButton(self.slider_progressbar_frame)
+        self.seg_button_1.grid(row=0, column=0, padx=(20, 10), pady=(10, 10), sticky="ew")
+        self.progressbar_1 = customtkinter.CTkProgressBar(self.slider_progressbar_frame)
+        self.progressbar_1.grid(row=1, column=0, padx=(20, 10), pady=(10, 10), sticky="ew")
+        self.progressbar_2 = customtkinter.CTkProgressBar(self.slider_progressbar_frame)
+        self.progressbar_2.grid(row=2, column=0, padx=(20, 10), pady=(10, 10), sticky="ew")
+        self.slider_1 = customtkinter.CTkSlider(self.slider_progressbar_frame, from_=0, to=1, number_of_steps=4)
+        self.slider_1.grid(row=3, column=0, padx=(20, 10), pady=(10, 10), sticky="ew")
+        self.slider_2 = customtkinter.CTkSlider(self.slider_progressbar_frame, orientation="vertical")
+        self.slider_2.grid(row=0, column=1, rowspan=5, padx=(10, 10), pady=(10, 10), sticky="ns")
+        self.progressbar_3 = customtkinter.CTkProgressBar(self.slider_progressbar_frame, orientation="vertical")
+        self.progressbar_3.grid(row=0, column=2, rowspan=5, padx=(10, 20), pady=(10, 10), sticky="ns")
 
-    def choose_color(self):
-        self.eraser_on = False
-        self.color = askcolor(color=self.color)[1]
+        # create scrollable frame
+        self.scrollable_frame = customtkinter.CTkScrollableFrame(self, label_text="Food Options")
+        self.scrollable_frame.grid(row=1, column=2, padx=(20, 0), pady=(20, 0), sticky="nsew")
+        self.scrollable_frame.grid_columnconfigure(0, weight=1)
+        self.scrollable_frame_switches = []
+        self.food_items = ["pizza Slice", "Pinaple Pizza Slice", "Wraps", "Macaroni And Cheese", "Fruit"]
+        for i in range(5):
+            switch = customtkinter.CTkSwitch(master=self.scrollable_frame, text=f"{self.food_items[i]}")
+            
+            switch.grid(row=i, column=0, padx=10, pady=(0, 20))
+            self.scrollable_frame_switches.append(switch)
 
-    def use_eraser(self):
-        self.activate_button(self.eraser_button, eraser_mode=True)
+        # create checkbox and switch frame
+        self.checkbox_slider_frame = customtkinter.CTkFrame(self)
+        self.checkbox_slider_frame.grid(row=1, column=3, padx=(20, 20), pady=(20, 0), sticky="nsew")
+        self.checkbox_1 = customtkinter.CTkCheckBox(master=self.checkbox_slider_frame)
+        self.checkbox_1.grid(row=1, column=0, pady=(20, 0), padx=20, sticky="n")
+        self.checkbox_2 = customtkinter.CTkCheckBox(master=self.checkbox_slider_frame)
+        self.checkbox_2.grid(row=2, column=0, pady=(20, 0), padx=20, sticky="n")
+        self.checkbox_3 = customtkinter.CTkCheckBox(master=self.checkbox_slider_frame)
+        self.checkbox_3.grid(row=3, column=0, pady=20, padx=20, sticky="n")
 
-    def activate_button(self, some_button, eraser_mode=False):
-        self.active_button.config(relief=RAISED)
-        some_button.config(relief=SUNKEN)
-        self.active_button = some_button
-        self.eraser_on = eraser_mode
+        # set default values
+        self.sidebar_button_3.configure(state="disabled", text="WIP")
+        self.checkbox_3.configure(state="disabled")
+        self.checkbox_1.select()
+        self.scrollable_frame_switches[0].select()
+        self.scrollable_frame_switches[4].select()
+        self.radio_button_3.configure(state="disabled")
+        self.appearance_mode_optionemenu.set("Dark")
+        self.scaling_optionemenu.set("100%")
+        self.optionmenu_1.set("Quanity")
+        self.combobox_1.set("CURRENCY")
+        self.slider_1.configure(command=self.progressbar_2.set)
+        self.slider_2.configure(command=self.progressbar_3.set)
+        self.progressbar_1.configure(mode="indeterminnate")
+        self.progressbar_1.start()
+        self.textbox.insert("0.0", "Description\n\n" + 'plain cheese pizza form jacobs pizza order slices and pay me by 3/21')
+        self.seg_button_1.configure(values=["WIP", "Value 2", "Value 3"])
+        self.seg_button_1.set("Valu2")
 
-    def paint(self, event):
-        self.line_width = self.choose_size_button.get()
-        paint_color = 'white' if self.eraser_on else self.color
-        if self.old_x and self.old_y:
-            self.c.create_line(self.old_x, self.old_y, event.x, event.y,
-                               width=self.line_width, fill=paint_color,
-                               capstyle=ROUND, smooth=TRUE, splinesteps=36)
-        self.old_x = event.x
-        self.old_y = event.y
+    def open_input_dialog_event(self):
+        dialog = customtkinter.CTkInputDialog(text="Type in a number:", title="thing")
+        print("CTkInputDialog:", dialog.get_input())
 
-    def reset(self, event):
-        self.old_x, self.old_y = None, None
+    def change_appearance_mode_event(self, new_appearance_mode: str):
+        customtkinter.set_appearance_mode(new_appearance_mode)
+
+    def change_scaling_event(self, new_scaling: str):
+        new_scaling_float = int(new_scaling.replace("%", "")) / 100
+        customtkinter.set_widget_scaling(new_scaling_float)
+
+    def sidebar_button_event(self):
+        print("sidebar_button click")
 
 
-if __name__ == '__main__':
-    Paint()
+if __name__ == "__main__":
+    app = App()
+    app.mainloop()
