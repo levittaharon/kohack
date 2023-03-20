@@ -110,11 +110,11 @@ class Operation():
     #Student Repository. The name of the student is the dictionary key, and the value is a list in the following format: 
     # [password, email, phone-number, [EMPTY LIST IN WHICH STUDENTS ORDERS WILL BE STORED]]
     
-    def createStudents():
+    #def createStudents():
         
     Students = {"John": ["613770", "j@F.com", "-8544-58-9234452", ["Hotdogs"]], "Johannes": ["hi", "hi@F.com", "-8544-58-9234452", []]}
     #{Name: List of:  password, email, phone number, list of orders joined}
-    def createInventory():
+    #def createInventory():
     #Inventory of items contains keys which are the names of the item, and an isntance of an item class as their value
     Inventory = {"Pizza" : Item("Pizza", "Shloimy", 1, "Food", "$2", 500, 9, 1, "Tel Aviv Pizza Shop", ["Shloimy"]), 
                  "Hotdogs" : Item("Hotdogs", "John", 1, "Food", "$1", 500, 12, 1, "Walmart", ["John"])}
