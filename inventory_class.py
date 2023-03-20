@@ -58,11 +58,11 @@ class inventory:
     def order(self,amount):
         con = sqlite3.connect("students.db")
         cur = con.cursor()
-        cur.execute(f"SELECT item_name,amount_left,student_list FROM {self.category} WHERE item_name IS ? and seller_name IS ?;",(item_name,seller_name))
+        cur.execute(f"SELECT item_name,amount_left,student_list FROM {self.category} WHERE item_name IS ? and seller_name IS ?;",(self.item_name,self.seller_name))
         info_list = cur.fetchall()
         info_list = list(info_list)
         new_stock = info_list[1] -amount #get rid of ordered item from stock
-        cur.execute(f"UPDATE {self.category} SET amount_left = ? WHERE item_name IS ? and seller_name IS ?;",(new_stock,item_name,seller_name))
+        cur.execute(f"UPDATE {self.category} SET amount_left = ? WHERE item_name IS ? and seller_name IS ?;",(new_stock,self.item_name,self.seller_name))
         catalogue.send_notification(info_list)
 
         
