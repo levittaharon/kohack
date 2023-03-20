@@ -22,6 +22,27 @@ class catalogue:
             #this return statement would equate to a no inventory found message
             print("error")
             return(False)
+    
+    def fetch_directory(self):
+        con = sqlite3.connect("students.db")
+        cur = con.cursor()
+        #fetch the entire directory in a way which can be read as a dictionary
+        cur.execute(f"SELECT * FROM directory;")
+        dictionary = {}
+        check = cur.fetchall()
+        #each row needs to be adictionary value so iterate through each one
+        for i in check:
+            i = list(i)
+            #this if statement turns the orders part of into a list
+            if i[5] == '':
+                i[5] = []
+            else:
+                i[5] = list(i[5])
+            dictionary.append(i[0]=[i[1],i[2],i[3],i[5]]) #this coresponds to name = [password,email,phone,orders_part_of]
+
+        return(check)
+
+
     def send_tabs(self): #this function sends the correct tabs to the gui
         con = sqlite3.connect("students.db")
         cur = con.cursor()

@@ -104,6 +104,7 @@ class Operation():
         self.mode = int(mode)
         self.category = category
     
+    #Function validates the user and only proceeds once successful. 
     def uservalidation(self):
         self.name = input("Please enter Name: ")
         self.password = input("Please enter your password: ")
@@ -112,12 +113,14 @@ class Operation():
             if self.name == key:
                 if self.password==value[0]:
                     return True
+                    #Will terminate the rest of the code and return True, allowing the user to proceed with the rest of the program
                 else:
                     retry = int(input("Incorrect Password\nTry Again? \n1.Yes, 2.No\n"))
                     if retry==2:
                         return False
                     else:
                         self.uservalidation()
+        # Will prompt the user to create a new id and passowrd if none exists
         newchoice = int(input("No such user, would you like to create one?\n1. Yes, 2. No\n"))
         if newchoice==1:
             email = input("Please enter Email: ")
