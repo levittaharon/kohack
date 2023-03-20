@@ -38,9 +38,10 @@ class catalogue:
                 i[5] = []
             else:
                 i[5] = list(i[5])
-            dictionary.append(i[0]=[i[1],i[2],i[3],i[5]]) #this coresponds to name = [password,email,phone,orders_part_of]
+            dictionary[i[0]] = [i[1],i[2],i[3],i[5]] #this coresponds to name = [password,email,phone,orders_part_of]
 
-        return(check)
+        print(dictionary)
+        return(dictionary)
 
 
     def send_tabs(self): #this function sends the correct tabs to the gui
@@ -69,3 +70,4 @@ class catalogue:
 #print("testing")
 #instance.send_catalogue("books",True)
 #print("done")
+catalogue().fetch_directory()
