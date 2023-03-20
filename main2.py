@@ -4,6 +4,8 @@ import threading
 import student_class
 import requests #pip install requests
 from bs4 import BeautifulSoup #pip install bs4
+import socket    
+        
 
 
 #The function needs 3 parameters, all for integer values. 
@@ -76,6 +78,7 @@ class Item():
             time.sleep(1)
             self.duration-=1
         print(f"{self.name} expired\n")
+        send(f"{self.name} expired\n")
         
 
 #while Inventory["Pizza"].duration >0:
