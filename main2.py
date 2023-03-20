@@ -109,14 +109,12 @@ class Operation():
                 if self.password==value[0]:
                     return True
                 else:
-                    print("Incorrect Password\n")
-                    retry = int(input("Try Again? \n1.Yes, 2.No\n"))
+                    retry = int(input("Incorrect Password\nTry Again? \n1.Yes, 2.No\n"))
                     if retry==2:
                         return False
                     else:
                         self.uservalidation()
-        print("No such user, would you like to create one?\n")
-        newchoice = int(input("1. Yes, 2. No\n"))
+        newchoice = int(input("No such user, would you like to create one?\n1. Yes, 2. No\n"))
         if newchoice==1:
             email = input("Please enter Email: ")
             phone = input("Please enter Phone: ")
@@ -153,8 +151,7 @@ class Operation():
         print(Operation.Inventory[self.choice].duration)
         self.amount = input("Please enter item amount: ")
         if self.choice not in Operation.Inventory:
-            print("Item not found\n")
-            self.newchoice = int(input("Would you like to create an order?\n1. Yes, 2.No\n"))
+            self.newchoice = int(input("Item not found\nWould you like to create an order?\n1. Yes, 2.No\n"))
             if self.newchoice==1:
                 self.addtoinventory(self.mode, self.category)
         else:    
@@ -171,8 +168,7 @@ class Operation():
                     self.order(self.choice, self.name)
                     return True
             else:
-                print("Order already joined\n")
-                n = int(input("Would You like to update the Order? \n1.Yes, 2.No\n"))
+                n = int(input("Order already joined\nWould You like to update the Order? \n1.Yes, 2.No\n"))
                 if n==1:
                     Operation.Inventory[self.choice].amount-=int(self.amount)
                     if self.templist[self.choice].amount==0:
@@ -215,8 +211,7 @@ class Operation():
         return categors
             
 while True:
-    print("Welcome to the Yeshiva Marketplace")
-    Mode = int(input("Please select the following options: \n 1. Group Order \n 2. Buy/Sell\n 3.Currency Converter\n"))
+    Mode = int(input("Welcome to the Yeshiva Marketplace\nPlease select the following options: \n 1. Group Order \n 2. Buy/Sell\n 3.Currency Converter\n"))
     if Mode==1 or Mode==2:    
         category=  input(f"Please enter one of the following categories: {Operation.categories()}")
         program = Operation(Mode, category)
