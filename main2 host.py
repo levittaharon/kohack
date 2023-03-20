@@ -291,6 +291,6 @@ while True:
     for key, value in Operation.Inventory.items():
         if value.duration == 0:
             del Operation.Inventory[key]
-        
+    catalogue.update_student(Operation.Students)    
              
 
