@@ -22,12 +22,11 @@ class Item():
         self.human = human
         self.humanlist = humanlist
         self.thread = threading.Thread(target=self.countdown)
-        self.thread.start
+        self.thread.start()
     def countdown(self):
-        self.timeleft = self.duration
         for i in range(self.duration):
             time.sleep(1)
-            self.timeleft-=1
+            self.duration-=1
         print("Item expired")
         
 
@@ -35,6 +34,7 @@ class Item():
 #    print(Inventory["Pizza"].duration)
  
 class Operation:
+    
     ##IMPORTANT: Both the Studens Dictionary and the Items Dictionary are Static, meaning they do not differ based on the instance of a class and remain the same. 
     # All instances access the same dictionary and a change will affect all instances
     
@@ -102,6 +102,7 @@ class Operation:
     #Allows the person to join the order, taking in as parameters the exact item he is joining and the amount of it he is purchasing
     def joinorder(self):
         self.choice = input("Please enter item name")
+        print(Operation.Inventory[self.choice].duration)
         self.amount = input("Please enter item amount")
         if self.choice not in Operation.Inventory:
             print("Item not found")
@@ -144,15 +145,20 @@ class Operation:
         del self.modedlistofstuff()[choice]
     def order(self, choice, name):
         print(f"{choice} ordered")
+        history = open("history.txt", "a")
+        history.write(f"Item: {choice}, Posted by {Operation.Inventory[choice].human}, Bought By {Operation.Inventory[choice].humanlist}\n")
+        history.close
         del Operation.Inventory[choice]
         Operation.Students[name][-1].remove(choice)
     def buy(self):
         self.choice = input("Please enter item name")
-        if self.uservalidation:
+        if self.uservalidation():
             if self.choice in Operation.Inventory:
-              del Operation.Inventory[self.choice]  
-              Operation.Students[self.name][-1].remove(choice)
-              print(f"{self.choice} purchased!")
+                with open("history.txt", "a") as history:
+                    history.write(f"Item: {self.choice}, Posted by {Operation.Inventory[self.choice].human}, Bought By {self.name}\n")
+                del Operation.Inventory[self.choice]  
+                #Operation.Students[self.name][-1].remove(self.choice)
+                print(f"{self.choice} purchased!")
             
 while True:
     print("Welcome to the Yeshiva Marketplace")
@@ -178,6 +184,9 @@ while True:
             print(Operation.Students)
         elif choice == 2:
             program.buy()
-                
+    for key, value in Operation.Inventory.items():
+        if value.duration == 0:
+            del Operation.Inventory[key]
+        
              
 
