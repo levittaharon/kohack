@@ -2,7 +2,7 @@ import socket
 import threading
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(("10.26.203.103", 55555))
+client.connect(("192.168.60.90", 55555))
 
 def recieve():
     while True:
