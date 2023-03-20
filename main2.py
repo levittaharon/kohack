@@ -81,7 +81,7 @@ class Item():
 #while Inventory["Pizza"].duration >0:
 #    print(Inventory["Pizza"].duration)
  
-class Operation:
+class Operation():
     
     ##IMPORTANT: Both the Studens Dictionary and the Items Dictionary are Static, meaning they do not differ based on the instance of a class and remain the same. 
     # All instances access the same dictionary and a change will affect all instances
@@ -234,9 +234,9 @@ while True:
         elif choice == 2:
             program.buy()
     elif Mode ==3:
-        currency=float(input("Please select one: 1.USD 2.CAD 3.GBP "))
-        convert_dir=float(input("Select original currency: 1.SHKL 2.Other"))
-        my_value=float(input("Value:"))
+        currency=float(input("Please select one: 1.USD 2.CAD 3.GBP\n"))
+        convert_dir=float(input("Select original currency: 1.SHKL 2.Other\n"))
+        my_value=float(input("Value of original currency: "))
         print(str(round(convert(currency, convert_dir, my_value)[1], 2)))
         print(convert(currency, convert_dir, my_value)[0])
     for key, value in Operation.Inventory.items():
