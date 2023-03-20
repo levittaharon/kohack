@@ -1,0 +1,5 @@
+def update_tabs(self,list provided containing strings with tab names):
+  tabs = []
+  for i in list:
+    intialize tab with name i
+    tabs.append(i)

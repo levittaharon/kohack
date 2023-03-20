@@ -2,6 +2,54 @@ import time
 import datetime
 import threading
 import student_class
+import requests #pip install requests
+from bs4 import BeautifulSoup #pip install bs4
+
+
+#The function needs 3 parameters, all for integer values. 
+#First value: 1 for USD, 2 for CAD, 3 for GBP, and 4 for EUR.
+#Second parameter is a 1 or 2-- A 1 lets us know that the final output should be in the foreign currency, a 2 for shekels
+#Last parameter specifies the actual value you wish to convert. If a 1 is specified in the second parameter, this parameter 
+#will be in shekels. If the second parameter is a 2, this will be in the specified foreign currency."""
+def convert(orig, to_or_from, value_orig):
+    cur=["EMPTY", 4500]
+    my_url='https://google.com'
+    spec_class='hello'
+    match orig:
+        case 1:
+            cur[0]="USD"
+            my_url='https://www.google.com/finance/quote/USD-ILS?sa=X&ved=2ahUKEwiDjLiU--b9AhXkmokEHdNqCEgQmY0JegQIBhAd'
+            spec_class="YMlKec fxKbKc"
+        case 2:
+            cur[0]="CAD"
+            my_url='https://www.google.com/finance/quote/CAD-ILS?sa=X&ved=2ahUKEwjq3cGLq-j9AhXGFFkFHbg7CDwQmY0JegQIBhAd'
+            spec_class="YMlKec fxKbKc"
+        #case 4:
+        #    cur[0]="EUR"
+        #    url='https://www.google.com/finance/quote/EUR-ILS?sa=X&ved=2ahUKEwjuyvisq-j9AhVBFFkFHfO2D68QmY0JegQIBhAd'
+        #    spec_class="YMlKec fxKbKc"
+        case 3:
+            cur[0]="GBP"
+            my_url='https://www.google.com/finance/quote/GBP-ILS?sa=X&ved=2ahUKEwjBiaHNq-j9AhUzVTUKHYb6Cj8QmY0JegQIBhAd'
+            spec_class="YMlKec fxKbKc"
+        case _:
+            print("ERROR: Please try again")
+    res= requests.get(my_url)
+    soup = BeautifulSoup(res.content, 'html.parser')
+    get_value = soup.find_all(class_=spec_class)[0].text
+    conversion_factor=float(get_value)
+    match to_or_from:
+        case 2:
+            cur[0]="SHKL"
+            cur[1]=(conversion_factor*value_orig)
+        case 1:
+            cur[1]=(value_orig/conversion_factor)
+        case _:
+            print("ERROR")
+    return(cur)
+
+
+
 
 # Class to create instance of inventroy item. Respectively, the parameters are as follows:
 # 1. NAME: The name of the item, 2. HUMAN: the name of the organizer, 3. MODE: the mode (1 for bulk orders, 2 for used items), 
@@ -33,15 +81,19 @@ class Item():
 #while Inventory["Pizza"].duration >0:
 #    print(Inventory["Pizza"].duration)
  
-class Operation:
+class Operation():
     
     ##IMPORTANT: Both the Studens Dictionary and the Items Dictionary are Static, meaning they do not differ based on the instance of a class and remain the same. 
     # All instances access the same dictionary and a change will affect all instances
     
     #Student Repository. The name of the student is the dictionary key, and the value is a list in the following format: 
     # [password, email, phone-number, [EMPTY LIST IN WHICH STUDENTS ORDERS WILL BE STORED]]
-    Students = {"John": ["613770", "j@F.com", "-8544-58-9234452", ["Hotdogs"]], "Johannes": ["hi", "hi@F.com", "-8544-58-9234452", []]}
     
+    def createStudents():
+        
+    Students = {"John": ["613770", "j@F.com", "-8544-58-9234452", ["Hotdogs"]], "Johannes": ["hi", "hi@F.com", "-8544-58-9234452", []]}
+    #{Name: List of:  password, email, phone number, list of orders joined}
+    def createInventory():
     #Inventory of items contains keys which are the names of the item, and an isntance of an item class as their value
     Inventory = {"Pizza" : Item("Pizza", "Shloimy", 1, "Food", "$2", 500, 9, 1, "Tel Aviv Pizza Shop", ["Shloimy"]), 
                  "Hotdogs" : Item("Hotdogs", "John", 1, "Food", "$1", 500, 12, 1, "Walmart", ["John"])}
@@ -61,14 +113,12 @@ class Operation:
                 if self.password==value[0]:
                     return True
                 else:
-                    print("Incorrect Password\n")
-                    retry = int(input("Try Again? \n1.Yes, 2.No\n"))
+                    retry = int(input("Incorrect Password\nTry Again? \n1.Yes, 2.No\n"))
                     if retry==2:
                         return False
                     else:
                         self.uservalidation()
-        print("No such user, would you like to create one?\n")
-        newchoice = int(input("1. Yes, 2. No\n"))
+        newchoice = int(input("No such user, would you like to create one?\n1. Yes, 2. No\n"))
         if newchoice==1:
             email = input("Please enter Email: ")
             phone = input("Please enter Phone: ")
@@ -105,8 +155,7 @@ class Operation:
         print(Operation.Inventory[self.choice].duration)
         self.amount = input("Please enter item amount: ")
         if self.choice not in Operation.Inventory:
-            print("Item not found\n")
-            self.newchoice = int(input("Would you like to create an order?\n1. Yes, 2.No\n"))
+            self.newchoice = int(input("Item not found\nWould you like to create an order?\n1. Yes, 2.No\n"))
             if self.newchoice==1:
                 self.addtoinventory(self.mode, self.category)
         else:    
@@ -123,8 +172,7 @@ class Operation:
                     self.order(self.choice, self.name)
                     return True
             else:
-                print("Order already joined\n")
-                n = int(input("Would You like to update the Order? \n1.Yes, 2.No\n"))
+                n = int(input("Order already joined\nWould You like to update the Order? \n1.Yes, 2.No\n"))
                 if n==1:
                     Operation.Inventory[self.choice].amount-=int(self.amount)
                     if self.templist[self.choice].amount==0:
@@ -159,13 +207,19 @@ class Operation:
                 del Operation.Inventory[self.choice]  
                 #Operation.Students[self.name][-1].remove(self.choice)
                 print(f"{self.choice} purchased!\n")
+    def categories():
+        categors = []
+        for key, value in Operation.Inventory.items():
+            if value.category not in categors:
+                categors.append(value.category)
+        return categors
             
 while True:
-    print("Welcome to the Yeshiva Marketplace")
-    Mode = int(input("Please select the following options: \n 1. Group Order \n 2. Buy/Sell\n"))
-    category=  input("Please enter one of the following categories: Food, Amenities, Books/Sefarim\n")
-    program = Operation(Mode, category)
-    program.printavailableinventory()
+    Mode = int(input("Welcome to the Yeshiva Marketplace\nPlease select the following options: \n 1. Group Order \n 2. Buy/Sell\n 3.Currency Converter\n"))
+    if Mode==1 or Mode==2:    
+        category=  input(f"Please enter one of the following categories: {Operation.categories()}")
+        program = Operation(Mode, category)
+        program.printavailableinventory()
     if Mode==1:    
         choice = int(input("1. Join Order\n2. Create Order\n"))
         if choice == 1:
@@ -184,6 +238,12 @@ while True:
             print(Operation.Students)
         elif choice == 2:
             program.buy()
+    elif Mode ==3:
+        currency=float(input("Please select one: 1.USD 2.CAD 3.GBP\n"))
+        convert_dir=float(input("Select original currency: 1.SHKL 2.Other\n"))
+        my_value=float(input("Value of original currency: "))
+        print(str(round(convert(currency, convert_dir, my_value)[1], 2)))
+        print(convert(currency, convert_dir, my_value)[0])
     for key, value in Operation.Inventory.items():
         if value.duration == 0:
             del Operation.Inventory[key]
