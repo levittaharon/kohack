@@ -8,7 +8,7 @@ from student_class import student
 from catalogue_class import *
 
 
-student("John", "61377000").new_student("gdsgf@dsf.com", "42352356423")
+#student("John", "61377000").new_student("gdsgf@dsf.com", "42352356423")
       
 host = "192.168.60.90"
 port = 55555
@@ -97,9 +97,9 @@ class Item():
         self.thread = threading.Thread(target=self.countdown)
         self.thread.start()
     def countdown(self):
-        for i in range(self.duration):
+        for i in range(int(self.duration)):
             time.sleep(1)
-            self.duration-=1
+            self.duration = int(self.duration)-1
         send(f"{self.name} expired\n")
         send(f"{self.name} expired\n")
         
@@ -114,12 +114,13 @@ class Operation():
     
     #Student Repository. The name of the student is the dictionary key, and the value is a list in the following format: 
     # [password, email, phone-number, [EMPTY LIST IN WHICH STUDENTS ORDERS WILL BE STORED]]
-    Students = catalogue().fetch_directory()
-    #Students = {"John": ["613770", "j@F.com", "-8544-58-9234452", ["Hotdogs"]], "Johannes": ["hi", "hi@F.com", "-8544-58-9234452", []]}
+    Students = {"John": ["613770", "j@F.com", "-8544-58-9234452", ["Hotdogs"]], "Johannes": ["hi", "hi@F.com", "-8544-58-9234452", []]}
     #{Name: List of:  password, email, phone number, list of orders joined}
     #Inventory of items contains keys which are the names of the item, and an isntance of an item class as their value
     Inventory = {"Pizza" : Item("Pizza", "Shloimy", 1, "Food", "$2", 500, 9, 1, "Tel Aviv Pizza Shop", ["Shloimy"]), 
-                 "Hotdogs" : Item("Hotdogs", "John", 1, "Food", "$1", 500, 12, 1, "Walmart", ["John"])}
+                 "Hotdogs" : Item("Hotdogs", "John", 1, "Food", "$1", 500, 12, 1, "Walmart", ["John"]), 
+                 "Gemara" : Item("Hotdogs", "John", 2, "Books", "$50", 500, 1, 2, "Makkot", ["John"]),
+                 "Shampoo" : Item("Hotdogs", "John", 1, "Amenities", "$5", 500, 6, 1, "Walmart", ["John"])}
     
     
     
@@ -147,6 +148,7 @@ class Operation():
                         return False
                     else:
                         self.uservalidation()
+                        return True
         # Will prompt the user to create a new id and passowrd if none exists
         send("No such user, would you like to create one?\n1. Yes, 2. No\n")
         newchoice = int(receive())
@@ -258,18 +260,21 @@ class Operation():
                 send(f"{self.choice} purchased!\n")
     def categories():
         categors = []
+        print(Operation.Inventory.items())
         for key, value in Operation.Inventory.items():
             if value.category not in categors:
                 categors.append(value.category)
         return categors
             
 while True:
-    for key, value in Operation.Inventory.items():
-        (inventory(value.name, value.human, value.mode, value.category, value.studentprice, str(value.duration), value.stock, value.info, value.humanlist)).order(value.amount) 
-    send(str(Operation.Students))
-    send(str(Operation.Inventory))
     send("Welcome to the Yeshiva Marketplace\nPlease select the following options: \n 1. Group Order \n 2. Buy/Sell\n 3.Currency Converter\n")
     Mode = int(receive())
+    for category in Operation.categories():    
+        for i in catalogue().send_catalogue(category.lower(), Mode):
+            Operation.Inventory[i[1]]=Item(i[1], i[2], Mode, category, i[3], i[4], i[5], 1, i[6], i[7].split(","))
+#           name, human, mode, category, studentprice, duration, amount, stock, info, humanlist
+    send(str(Operation.Students))
+    send(str(Operation.Inventory))
     if Mode==1 or Mode==2:    
         send(f"Please enter one of the following categories: {Operation.categories()}")
         category=  receive()
@@ -306,9 +311,8 @@ while True:
     for key, value in Operation.Inventory.items():
         if value.duration == 0:
             del Operation.Inventory[key]
-    catalogue.update_student(Operation.Students)   
-#    for key, value in Operation.Inventory:
-#        (inventory(value.name, value.human, value.mode, value.category, value.studentprice, value.duration, value.amount_left, value.info, value.humanlist)).order(value.amount()) 
-             
-
-name, human, mode, category, studentprice, duration, amount, stock, info, humanlist
+#    catalogue().update_student(Operation.Students)   
+#    for key, value in Operation.Inventory.items():
+#        hi = (inventory(value.name, value.human, value.mode, (value.category).lower(), value.studentprice, str(value.duration), value.stock, value.info, value.humanlist))
+#        hi.add_item()
+#        hi.order(value.amount)
