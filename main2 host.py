@@ -2,8 +2,13 @@ import time
 import threading
 import requests #pip install requests
 from bs4 import BeautifulSoup #pip install bs4
-import socket    
-        
+import socket
+from student_class import student
+from catalogue_class import *
+
+
+student("John", "613770").new_student("gdsgf@dsf.com", "42352356423")
+      
 host = "192.168.60.90"
 port = 55555
 
@@ -107,12 +112,9 @@ class Operation():
     
     #Student Repository. The name of the student is the dictionary key, and the value is a list in the following format: 
     # [password, email, phone-number, [EMPTY LIST IN WHICH STUDENTS ORDERS WILL BE STORED]]
-    
-    #def createStudents():
-        
-    Students = {"John": ["613770", "j@F.com", "-8544-58-9234452", ["Hotdogs"]], "Johannes": ["hi", "hi@F.com", "-8544-58-9234452", []]}
+    Students = catalogue().fetch_directory()
+    #Students = {"John": ["613770", "j@F.com", "-8544-58-9234452", ["Hotdogs"]], "Johannes": ["hi", "hi@F.com", "-8544-58-9234452", []]}
     #{Name: List of:  password, email, phone number, list of orders joined}
-    #def createInventory():
     #Inventory of items contains keys which are the names of the item, and an isntance of an item class as their value
     Inventory = {"Pizza" : Item("Pizza", "Shloimy", 1, "Food", "$2", 500, 9, 1, "Tel Aviv Pizza Shop", ["Shloimy"]), 
                  "Hotdogs" : Item("Hotdogs", "John", 1, "Food", "$1", 500, 12, 1, "Walmart", ["John"])}
@@ -143,11 +145,12 @@ class Operation():
                     else:
                         self.uservalidation()
         # Will prompt the user to create a new id and passowrd if none exists
-        newchoice = int(input("No such user, would you like to create one?\n1. Yes, 2. No\n"))
+        send("No such user, would you like to create one?\n1. Yes, 2. No\n")
+        newchoice = int(receive())
         if newchoice==1:
             send("Please enter Email: ")
             email = receive()
-            input("Please enter Phone: ")
+            send("Please enter Phone: ")
             phone = receive()
             #Adds the student to the Students dictionary with the value being a list, as noted above.
             Operation.Students[self.name]=[self.password, phone, email, []]

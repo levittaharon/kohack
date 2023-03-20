@@ -41,7 +41,7 @@ class catalogue:
                 i[5] = list(i[5])
             dictionary[i[0]] = [i[1],i[2],i[3],i[5]] #this coresponds to name = [password,email,phone,orders_part_of]
 
-        print(dictionary)
+        #print(dictionary)
         return(dictionary)
 
       #this will take in a dictionary and update the db
