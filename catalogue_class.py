@@ -22,6 +22,13 @@ class catalogue:
             #this return statement would equate to a no inventory found message
             print("error")
             return(False)
+    def send_tabs(self): #this function sends the correct tabs to the gui
+        con = sqlite3.connect("students.db")
+        cur = con.cursor()
+        cur.execute(f"SELECT * FROM tab_list;")
+        check = cur.fetchall()
+        return(check)
+
     def send_notification(self,info_list): #this function takes in a list with the item name as the 0 index and seller name as 1 index and amount left as 2 index
         user = info_list[1]
         item = info_list[0]
