@@ -24,7 +24,7 @@ class inventory:
         #create a table in the student database that keeps track of the orders for each category
         con = sqlite3.connect("students.db")
         cur = con.cursor()
-        cur.execute("CREATE TABLE IF NOT EXISTS books(mode,item_name,seller_name,price,time_expire,amount_left INTEGERL,info,student_list);")
+        cur.execute("CREATE TABLE IF NOT EXISTS books(mode,item_name,seller_name,price,time_expire,amount_left INTEGER,info,student_list);")
         cur.execute("CREATE TABLE IF NOT EXISTS food(mode,item_name,seller_name,price,time_expire,amount_left INTEGER,info,student_list);")
         cur.execute("CREATE TABLE IF NOT EXISTS ammenities(mode,item_name,seller_name,price,time_expire,amount_left INTEGER,info,student_list);")
         cur.execute("CREATE TABLE IF NOT EXISTS luggage(mode,item_name,seller_name,price,time_expire,amount_left INTEGER,info,student_list);")
