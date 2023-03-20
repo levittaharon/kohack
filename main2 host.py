@@ -215,14 +215,23 @@ class Operation():
                         self.order(self.choice, self.name)
                         return True
                     
-    
+    #Adds new item to inventory after prompted for all the informations
     def addtoinventory(self, Mode, category):
         send("Please enter item name: ")
         self.choice = receive()
         self.category =category
         self.mode = Mode
         if self.uservalidation():
-            self.studentprice, self.duration, self.amount, self.stock, self.info =input("").split(", ")
+            send("Please enter price: ")
+            self.studentprice = receive()
+            send("Please enter duration until expiry: ")
+            self.duration = receive()
+            send("Please enter amount needed: ")
+            self.amount = receive()
+            send("Please enter stock: ")
+            self.stock = receive()
+            send("Please enter more information (if any): ")
+            self.info = receive()
             Operation.Inventory[self.choice] = Item(self.choice,self.name, self.mode, self.category, self.studentprice, self.duration, self.amount, self.stock, self.info, [self.name])
             return True     
     def cancelorder(self, choice):
@@ -296,8 +305,8 @@ while True:
         if value.duration == 0:
             del Operation.Inventory[key]
     catalogue.update_student(Operation.Students)   
-    for key, value in Operation.Inventory:
-        (inventory(value.name, value.human, value.mode, value.category, value.studentprice, value.duration, value.amount_left, value.info, value.humanlist)).order(value.amount()) 
+#    for key, value in Operation.Inventory:
+#        (inventory(value.name, value.human, value.mode, value.category, value.studentprice, value.duration, value.amount_left, value.info, value.humanlist)).order(value.amount()) 
              
 
 name, human, mode, category, studentprice, duration, amount, stock, info, humanlist
