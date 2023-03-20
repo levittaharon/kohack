@@ -1,7 +1,5 @@
 import time
-import datetime
 import threading
-import student_class
 import requests #pip install requests
 from bs4 import BeautifulSoup #pip install bs4
 import socket    
@@ -16,12 +14,12 @@ server.listen()
 
 client, address = server.accept()
 
-client.send("Connected to server!".encode("ascii"))
+client.send("Connected to server!".encode("utf-8"))
 
 def receive():
-    input = client.recv(1024)
+    return(client.recv(1024).decode("utf-8"))
 def send(message):
-    client.send(message)
+    client.send(message.encode("utf-8"))
 send("Connected with {}".format(str(address)))
 
 
@@ -172,7 +170,7 @@ class Operation():
     def printavailableinventory(self):
         inventory = self.modedlistofstuff()
         for key, value in inventory.items():  
-            send(f"item: {key}, organizer: {value.human}, price you pay: {value.studentprice}, Expires in {value.duration} secs, contributions needed: {value.amount}, quantity of bulk: {value.stock}, participants: {value.humanlist}", "\n")
+            send(f"item: {key}, organizer: {value.human}, price you pay: {value.studentprice}, Expires in {value.duration} secs, contributions needed: {value.amount}, quantity of bulk: {value.stock}, participants: {value.humanlist}\n")
     
     #This function prints the additional info of the selected Item (choice)
     def info(self, choice):
@@ -182,7 +180,7 @@ class Operation():
     def joinorder(self):
         send("Please enter item name: ")
         self.choice = receive()
-        send(Operation.Inventory[self.choice].duration)
+        send(str(Operation.Inventory[self.choice].duration))
         send("Please enter item amount: ")
         self.amount = receive()
         if self.choice not in Operation.Inventory:
@@ -250,6 +248,8 @@ class Operation():
         return categors
             
 while True:
+    send(str(Operation.Students))
+    send(str(Operation.Inventory))
     send("Welcome to the Yeshiva Marketplace\nPlease select the following options: \n 1. Group Order \n 2. Buy/Sell\n 3.Currency Converter\n")
     Mode = int(receive())
     if Mode==1 or Mode==2:    
@@ -262,18 +262,18 @@ while True:
         choice = int(receive())
         if choice == 1:
             program.joinorder()
-            send(Operation.Inventory)
+            send(str(Operation.Inventory))
             program.printavailableinventory()
-            send(Operation.Students)
+            send(str(Operation.Students))
         elif choice == 2:
             program.addtoinventory(Mode, category)
     elif Mode==2:
         choice = int(input("1. Post Item\n2.Buy Item\n"))
         if choice == 1:
             program.addtoinventory(Mode, category)
-            send(Operation.Inventory)
+            send(str(Operation.Inventory))
             program.printavailableinventory()
-            send(Operation.Students)
+            send(str(Operation.Students))
         elif choice == 2:
             program.buy()
     elif Mode ==3:
