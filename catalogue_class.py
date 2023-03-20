@@ -31,10 +31,10 @@ class catalogue:
             return(False)
     
     def fetch_directory(self):
-        con = sqlite3.connect("students.db")
+        con = sqlite3.connect("directory.db")
         cur = con.cursor()
         #fetch the entire directory in a way which can be read as a dictionary
-        cur.execute(f"SELECT * FROM directory;")
+        cur.execute(f"SELECT * FROM sdirectory;")
         dictionary = {}
         check = cur.fetchall()
         con.close()
@@ -58,21 +58,22 @@ class catalogue:
         #use a for loop to iterate through each row
         for key,value in dictionary.items():
             #initialize the db this is done in the for loop to check if there is a new student
-            con = sqlite3.connect("students.db")
+            con = sqlite3.connect("directory.db")
             cur = con.cursor()
             
             password = value[0]
             email = value[1]
             phone = value[2]
             orders = str(value[3])
-            cur.execute("SELECT * FROM directory WHERE name IS ?;",(key,)) #key is the name
+            cur.execute("SELECT * FROM sdirectory WHERE name IS ?;",(key,)) #key is the name
             check = cur.fetchall()
             if len(check) != 0: #if student exists
-                cur.execute("UPDATE directory SET orders_part_of = ? WHERE name is ?",(orders,key)) #key is the name
+                cur.execute("UPDATE sdirectory SET orders_part_of = ? WHERE name is ?",(orders,key)) #key is the name
+            
             else:
                 #create new instance of student do it this way to validate the password
                 student(key,password).new_student(email,phone)
-                cur.execute("UPDATE directory SET orders_part_of = ? WHERE name is ?;",(orders,key)) #key is the name
+                cur.execute("UPDATE sdirectory SET orders_part_of = ? WHERE name is ?;",(orders,key)) #key is the name
             con.commit()
             con.close()
 
@@ -103,6 +104,7 @@ class catalogue:
         con = sqlite3.connect("students.db")
         cur = con.cursor()
         cur.execute("UPDATE directory SET notification = ? WHERE name IS ?;",(msg,user))
+        con.close()
 #for testing purposes only
 #instance = catalogue()
 #print("testing")
