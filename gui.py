@@ -56,6 +56,35 @@ class Window:
         self.notebook.insert('end', self.frame4, text = 'test')
         self.notebook.pack(padx = 10, pady = 20, expand = True)
 
+
+        #import tkinter and ttk modules
+from tkinter import *
+from tkinter import ttk
+
+#Make the root widget
+root = Tk()
+
+#Make the first notebook
+program = ttk.Notebook(root) #Create the program notebook
+program.pack()
+
+#Make the terms frames for the program notebook
+for r in range(1,4):
+    termName = 'Term'+str(r) #concatenate term name(will come from dict)
+    term = Frame(program)   #create frame widget to go in program nb
+    program.add(term, text=termName)# add the newly created frame widget to the program notebook
+    nbName=termName+'courses'#concatenate notebook name for each iter
+    nbName = ttk.Notebook(term)#Create the notebooks to go in each of the terms frames
+    nbName.pack()#pack the notebook
+
+    for a in range (1,6):
+        courseName = termName+"Course"+str(a)#concatenate coursename(will come from dict)
+        course = Frame(nbName) #Create a course frame for the newly created term frame for each iter
+        nbName.add(course, text=courseName)#add the course frame to the new notebook 
+
+root.mainloop()
+
+
 #----------------------------------------------------------------------
 
 
@@ -279,6 +308,51 @@ label.pack()
 
         
 #=====================================================================================
+
+
+
+# creating main tkinter window/toplevel
+master = Tk()
+ 
+# this will create a label widget
+l1 = Label(master, text = "Height")
+l2 = Label(master, text = "Width")
+ 
+# grid method to arrange labels in respective
+# rows and columns as specified
+l1.grid(row = 0, column = 0, sticky = W, pady = 2)
+l2.grid(row = 1, column = 0, sticky = W, pady = 2)
+ 
+# entry widgets, used to take entry from user
+e1 = Entry(master)
+e2 = Entry(master)
+ 
+# this will arrange entry widgets
+e1.grid(row = 0, column = 1, pady = 2)
+e2.grid(row = 1, column = 1, pady = 2)
+ 
+# checkbutton widget
+c1 = Checkbutton(master, text = "Preserve")
+c1.grid(row = 2, column = 0, sticky = W, columnspan = 2)
+ 
+
+ 
+
+ 
+# button widget
+b1 = Button(master, text = "Zoom in")
+b2 = Button(master, text = "Zoom out")
+ 
+# arranging button widgets
+b1.grid(row = 2, column = 2, sticky = E)
+b2.grid(row = 2, column = 3, sticky = E)
+ 
+# infinite loop which can be terminated
+# by keyboard or mouse interrupt
+mainloop()
+
+
+
 
 
 root.mainloop()
