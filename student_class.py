@@ -30,7 +30,7 @@ class student:
       print("invalid password")
       return False
     #close the cursor because it is good practice if it is unnecessary to have it open
-    cur.close()
+    conn.close()
   
   #this will check if it is a valid login and return all of the information for now
   def login(self):
@@ -41,6 +41,7 @@ class student:
     cur.execute("SELECT * FROM directory WHERE name IS ? AND password IS ?;",(self.name,self.password))
     #check if the previous statement found a login matching the one submitted
     result = cur.fetchall()
+    conn.close()
     if len(result)== 0: #if it doesn't find anything then len is 0
       print("bad login")
       return False

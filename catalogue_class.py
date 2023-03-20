@@ -1,5 +1,5 @@
 import sqlite3
-
+from student_class import student
 class catalogue:
     def __init__(self):
         pass
@@ -10,15 +10,21 @@ class catalogue:
             con = sqlite3.connect("students.db")
             cur = con.cursor()
             cur.execute(f"SELECT * FROM {category} WHERE mode IS True;")
-            check = cur.fetchall()
+            check = list(cur.fetchall())
+            final = []
+            con.close()
+            for i in check:
+                i =list(i)
+                final.append(i)
             if len(check) == 0:
-                print("nothing at this moment")
+                #print("nothing at this moment")
+                #false means means nothing in db
                 return(False)
                 
             else:
-                print("success")
-                print(check)
-                return(check)
+                #print("success")
+                #print(final)
+                return(final)
         except:
             #this return statement would equate to a no inventory found message
             print("error")
@@ -31,6 +37,7 @@ class catalogue:
         cur.execute(f"SELECT * FROM directory;")
         dictionary = {}
         check = cur.fetchall()
+        con.close()
         #each row needs to be adictionary value so iterate through each one
         for i in check:
             i = list(i)
@@ -57,15 +64,19 @@ class catalogue:
             password = value[0]
             email = value[1]
             phone = value[2]
-            orders = value[3]
-            cur.execute("SELECT * FROM directory WHERE name IS ?",(key)) #key is the name
+            orders = str(value[3])
+            cur.execute("SELECT * FROM directory WHERE name IS ?;",(key,)) #key is the name
             check = cur.fetchall()
             if len(check) != 0: #if student exists
                 cur.execute("UPDATE directory SET orders_part_of = ? WHERE name is ?",(orders,key)) #key is the name
             else:
-                cur.execute("INSERT INTO directory (name,password,email,phone,orders_part_of) VALUES (?,?,?,?,?) ",(key,password,email,phone,orders)) #key is the name
+                #create new instance of student do it this way to validate the password
+                student(key,password).new_student(email,phone)
+                cur.execute("UPDATE directory SET orders_part_of = ? WHERE name is ?;",(orders,key)) #key is the name
             con.commit()
             con.close()
+
+
 
             
 
@@ -97,4 +108,4 @@ class catalogue:
 #print("testing")
 #instance.send_catalogue("books",True)
 #print("done")
-catalogue().fetch_directory()
+#catalogue().update_student({"john":["goodpass","email","773",["new_order"]]})

@@ -2,8 +2,14 @@ import time
 import threading
 import requests #pip install requests
 from bs4 import BeautifulSoup #pip install bs4
-import socket    
-        
+import socket
+from inventory_class import inventory
+from student_class import student
+from catalogue_class import *
+
+
+student("John", "61377000").new_student("gdsgf@dsf.com", "42352356423")
+      
 host = "192.168.60.90"
 port = 55555
 
@@ -107,15 +113,13 @@ class Operation():
     
     #Student Repository. The name of the student is the dictionary key, and the value is a list in the following format: 
     # [password, email, phone-number, [EMPTY LIST IN WHICH STUDENTS ORDERS WILL BE STORED]]
-    
-    #def createStudents():
-        
-    Students = {"John": ["613770", "j@F.com", "-8544-58-9234452", ["Hotdogs"]], "Johannes": ["hi", "hi@F.com", "-8544-58-9234452", []]}
+    Students = catalogue().fetch_directory()
+    #Students = {"John": ["613770", "j@F.com", "-8544-58-9234452", ["Hotdogs"]], "Johannes": ["hi", "hi@F.com", "-8544-58-9234452", []]}
     #{Name: List of:  password, email, phone number, list of orders joined}
-    #def createInventory():
     #Inventory of items contains keys which are the names of the item, and an isntance of an item class as their value
     Inventory = {"Pizza" : Item("Pizza", "Shloimy", 1, "Food", "$2", 500, 9, 1, "Tel Aviv Pizza Shop", ["Shloimy"]), 
                  "Hotdogs" : Item("Hotdogs", "John", 1, "Food", "$1", 500, 12, 1, "Walmart", ["John"])}
+    
     
     
     #The constructor takes in the mode, digit 1 for bulk orders, and the digit 2 for buing/selling
@@ -143,11 +147,12 @@ class Operation():
                     else:
                         self.uservalidation()
         # Will prompt the user to create a new id and passowrd if none exists
-        newchoice = int(input("No such user, would you like to create one?\n1. Yes, 2. No\n"))
+        send("No such user, would you like to create one?\n1. Yes, 2. No\n")
+        newchoice = int(receive())
         if newchoice==1:
             send("Please enter Email: ")
             email = receive()
-            input("Please enter Phone: ")
+            send("Please enter Phone: ")
             phone = receive()
             #Adds the student to the Students dictionary with the value being a list, as noted above.
             Operation.Students[self.name]=[self.password, phone, email, []]
@@ -248,6 +253,8 @@ class Operation():
         return categors
             
 while True:
+    for key, value in Operation.Inventory.items():
+        (inventory(value.name, value.human, value.mode, value.category, value.studentprice, str(value.duration), value.stock, value.info, value.humanlist)).order(value.amount) 
     send(str(Operation.Students))
     send(str(Operation.Inventory))
     send("Welcome to the Yeshiva Marketplace\nPlease select the following options: \n 1. Group Order \n 2. Buy/Sell\n 3.Currency Converter\n")
@@ -288,6 +295,9 @@ while True:
     for key, value in Operation.Inventory.items():
         if value.duration == 0:
             del Operation.Inventory[key]
-        
+    catalogue.update_student(Operation.Students)   
+    for key, value in Operation.Inventory:
+        (inventory(value.name, value.human, value.mode, value.category, value.studentprice, value.duration, value.amount_left, value.info, value.humanlist)).order(value.amount()) 
              
 
+name, human, mode, category, studentprice, duration, amount, stock, info, humanlist
