@@ -1,4 +1,5 @@
 import sqlite3
+
 class catalogue:
     def __init__(self):
         pass
@@ -42,6 +43,32 @@ class catalogue:
 
         print(dictionary)
         return(dictionary)
+
+      #this will take in a dictionary and update the db
+    #the dictionary is {name:[password,email,phone,orders_by_user]}
+    def update_student(self,dictionary):
+        
+        #use a for loop to iterate through each row
+        for key,value in dictionary.items():
+            #initialize the db this is done in the for loop to check if there is a new student
+            con = sqlite3.connect("students.db")
+            cur = con.cursor()
+            
+            password = value[0]
+            email = value[1]
+            phone = value[2]
+            orders = value[3]
+            cur.execute("SELECT * FROM directory WHERE name IS ?",(key)) #key is the name
+            check = cur.fetchall()
+            if len(check) != 0: #if student exists
+                cur.execute("UPDATE directory SET orders_part_of = ? WHERE name is ?",(orders,key)) #key is the name
+            else:
+                cur.execute("INSERT INTO directory (name,password,email,phone,orders_part_of) VALUES (?,?,?,?,?) ",(key,password,email,phone,orders)) #key is the name
+            con.commit()
+            con.close()
+
+            
+
 
 
     def send_tabs(self): #this function sends the correct tabs to the gui
