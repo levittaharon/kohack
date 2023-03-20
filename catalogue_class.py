@@ -65,7 +65,7 @@ class catalogue:
             else:
                 #create new instance of student do it this way to validate the password
                 student(key,password).new_student(email,phone)
-                cur.execute("UPDATE directory SET orders_part_of = ? WHERE name is ?",(orders,key)) #key is the name
+                cur.execute("UPDATE directory SET orders_part_of = ? WHERE name is ?;",(orders,key)) #key is the name
             con.commit()
             con.close()
 
