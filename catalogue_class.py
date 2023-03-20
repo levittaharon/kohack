@@ -12,6 +12,7 @@ class catalogue:
             cur.execute(f"SELECT * FROM {category} WHERE mode IS True;")
             check = list(cur.fetchall())
             final = []
+            con.close()
             for i in check:
                 i =list(i)
                 final.append(i)
@@ -36,6 +37,7 @@ class catalogue:
         cur.execute(f"SELECT * FROM directory;")
         dictionary = {}
         check = cur.fetchall()
+        con.close()
         #each row needs to be adictionary value so iterate through each one
         for i in check:
             i = list(i)
