@@ -12,7 +12,7 @@ class new_market:
         #use try and except to make sure that value isn't false
         try:
             #this creates a table for the new market that the admin wants to add
-            cur.execute(f"CREATE TABLE IF NOT EXISTS {self.market_name}(mode,item_name,seller_name,price,time_expire,amount_left,info,student_list);")
+            cur.execute(f"CREATE TABLE IF NOT EXISTS {self.market_name}(mode,item_name,seller_name,price,time_expire,amount_left,amount INTEGER NOT NULL,info,student_list);")
             cur.execute("INSERT INTO tab_list (tab_name) VALUES (?);",(self.market_name))
         except:
             print("issue with the table name please choose a different one")
