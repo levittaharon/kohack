@@ -27,6 +27,7 @@ class inventory:
         cur.execute("CREATE TABLE IF NOT EXISTS food(mode,item_name,seller_name,price,time_expire,amount_left INTEGER,info,student_list);")
         cur.execute("CREATE TABLE IF NOT EXISTS ammenities(mode,item_name,seller_name,price,time_expire,amount_left INTEGER,info,student_list);")
         cur.execute("CREATE TABLE IF NOT EXISTS luggage(mode,item_name,seller_name,price,time_expire,amount_left INTEGER,info,student_list);")
+        cur.execute("CREATE TABLE IF NOT EXISTS transport(mode,item_name,seller_name,price,time_expire,amount_left INTEGER,info,student_list);")
         con.close()
     def add_item(self):
         con = sqlite3.connect("students.db")
