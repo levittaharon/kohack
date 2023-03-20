@@ -13,6 +13,7 @@ class new_market:
         try:
             #this creates a table for the new market that the admin wants to add
             cur.execute(f"CREATE TABLE IF NOT EXISTS {self.market_name}(mode,item_name,seller_name,price,time_expire,amount_left,info,student_list);")
+            cur.execute("INSERT INTO tab_list (tab_name) VALUES (?);",(self.market_name))
         except:
             print("issue with the table name please choose a different one")
         con.close()
@@ -24,6 +25,8 @@ class new_market:
         try:
             #this creates a table for the new market that the admin wants to add
             cur.execute(f"DROP TABLE {self.market_name};")
+            #delete from list of tabs so that this tab isn't despalayed
+            cur.execute("DELETE FROM tab_list WHERE tab_name IS ?;"(self.market_name))
         except:
             print("bad table name")
         con.close()

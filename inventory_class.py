@@ -28,6 +28,9 @@ class inventory:
         cur.execute("CREATE TABLE IF NOT EXISTS ammenities(mode,item_name,seller_name,price,time_expire,amount_left INTEGER,info,student_list);")
         cur.execute("CREATE TABLE IF NOT EXISTS luggage(mode,item_name,seller_name,price,time_expire,amount_left INTEGER,info,student_list);")
         cur.execute("CREATE TABLE IF NOT EXISTS transport(mode,item_name,seller_name,price,time_expire,amount_left INTEGER,info,student_list);")
+        #make a 1 column db to keep track of which tabs are being used to send to gui
+        cur.execute("CREATE TABLE IF NOT EXISTS tab_list(tab_name);")
+        cur.execute("INSERT INTO tab_list (tab_name) VALUES ('books'), ('food'), ('ammenities'), ('luggage'), ('transport');")#insert all of the defauslt values
         con.close()
     def add_item(self):
         con = sqlite3.connect("students.db")
