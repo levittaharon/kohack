@@ -5,6 +5,15 @@ from tkinter import ttk
 import tkinter as tk
 from tkinter.messagebox import showinfo
 
+
+
+#sudo
+#def update_tabs(self,GUI frame1):
+  #tabs = []
+ # for i in list:
+    #intialize frame1 with name i
+    #tabs.append(i)
+
 class Window:
     def __init__(self, master):
         self.master = master
@@ -45,13 +54,13 @@ class Window:
         self.notebook.pack(padx = 5, pady = 5, expand = True)
 
         self.notebook.insert('end', self.frame4, text = 'test')
-        self.notebook.pack(padx = 5, pady = 5, expand = True)
+        self.notebook.pack(padx = 10, pady = 20, expand = True)
 
-
-
+#----------------------------------------------------------------------
 
 
       
+
 
 
  
@@ -97,6 +106,8 @@ root.title('KoHack GUI')
 other = tk.Frame(root)
 other.pack()
 
+
+
 # put widgets in frame (other)
 
 status = tk.Label(other, text="Skokie", bd=1, relief=tk.SUNKEN, anchor=tk.W)
@@ -117,7 +128,7 @@ tk.Button(root, text='Quit', command=root.destroy).pack(side= tk.RIGHT)
 
 
 
-
+#=================================================================================
 
 
 
@@ -136,7 +147,7 @@ yscrollbar = Scrollbar(window.frame1)
 yscrollbar.pack(side = RIGHT, fill = Y)
   
 label = Label(window.frame1,
-              text = "Select the languages below :  ",
+              text = "Select What You Need",
               font = ("Times New Roman", 10), 
               padx = 10, pady = 10)
 label.pack()
@@ -226,7 +237,7 @@ yscrollbar.config(command = list.yview)
 #window.mainloop()
 
 
-
+#=======================================================================================
 
 
 #notebook in a notebook
@@ -266,51 +277,8 @@ label.pack()
 
 
 
-
-
-# creates a Tk() object
-master = Tk()
- 
-# sets the geometry of main
-# root window
-
- 
- 
-# function to open a new window
-# on a button click
-def openNewWindow():
-     
-    # Toplevel object which will
-    # be treated as a new window
-    newWindow = Toplevel(master)
- 
-    # sets the title of the
-    # Toplevel widget
-    newWindow.title("Student Info")
- 
-    # sets the geometry of toplevel
-    
-    # A Label widget to show in toplevel
-    Label(newWindow,
-          text ="This is a new window").pack()
- 
- 
-label = Label(
-              text ="This is the main window")
- 
-label.pack(pady = 10)
- 
-# a button widget which will open a
-# new window on button click
-btn = Button(master,
-             text ="Click to open a new window",
-             command = openNewWindow)
-btn.pack(pady = 10)
- 
-# mainloop, runs infinitely
-mainloop()
-
-
+        
+#=====================================================================================
 
 
 root.mainloop()
