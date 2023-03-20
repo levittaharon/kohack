@@ -10,7 +10,7 @@ import student_class
 # 10. HUMANLIST: list of participating students
 class Item():
     def __init__(self, name, human, mode, category, studentprice, duration, amount, stock, info, humanlist):
-        print(f"New {name} Item created")
+        print(f"New {name} Item created\n")
         self.name = name
         self.category = category
         self.studentprice = studentprice
@@ -27,7 +27,7 @@ class Item():
         for i in range(self.duration):
             time.sleep(1)
             self.duration-=1
-        print("Item expired")
+        print(f"{self.name} expired\n")
         
 
 #while Inventory["Pizza"].duration >0:
@@ -61,14 +61,14 @@ class Operation:
                 if self.password==value[0]:
                     return True
                 else:
-                    print("Incorrect Password")
+                    print("Incorrect Password\n")
                     retry = int(input("Try Again? \n1.Yes, 2.No\n"))
                     if retry==2:
                         return False
                     else:
                         self.uservalidation()
-        print("No such user, would you like to create one?")
-        newchoice = int(input("1. yes, 2. no"))
+        print("No such user, would you like to create one?\n")
+        newchoice = int(input("1. Yes, 2. No\n"))
         if newchoice==1:
             email = input("Please enter Email: ")
             phone = input("Please enter Phone: ")
@@ -101,17 +101,17 @@ class Operation:
     
     #Allows the person to join the order, taking in as parameters the exact item he is joining and the amount of it he is purchasing
     def joinorder(self):
-        self.choice = input("Please enter item name")
+        self.choice = input("Please enter item name: ")
         print(Operation.Inventory[self.choice].duration)
-        self.amount = input("Please enter item amount")
+        self.amount = input("Please enter item amount: ")
         if self.choice not in Operation.Inventory:
-            print("Item not found")
-            self.newchoice = int(input("Would you like to create an order?\n1. Yes, 2.No"))
+            print("Item not found\n")
+            self.newchoice = int(input("Would you like to create an order?\n1. Yes, 2.No\n"))
             if self.newchoice==1:
                 self.addtoinventory(self.mode, self.category)
         else:    
             if self.uservalidation() and self.name not in Operation.Inventory[self.choice].humanlist:
-                print("Order Joined")
+                print("Order Joined\n")
                 #Subrtacts the amount the man ordered from the item amount
                 Operation.Inventory[self.choice].amount-=int(self.amount)
                 #Appends the name of the orderee to the list of people involved in the order
@@ -123,7 +123,7 @@ class Operation:
                     self.order(self.choice, self.name)
                     return True
             else:
-                print("Order already joined")
+                print("Order already joined\n")
                 n = int(input("Would You like to update the Order? \n1.Yes, 2.No\n"))
                 if n==1:
                     Operation.Inventory[self.choice].amount-=int(self.amount)
@@ -133,7 +133,7 @@ class Operation:
                     
     
     def addtoinventory(self, Mode, category):
-        self.choice = input("Please enter item name")
+        self.choice = input("Please enter item name: ")
         self.category =category
         self.mode = Mode
         if self.uservalidation():
@@ -141,33 +141,33 @@ class Operation:
             Operation.Inventory[self.choice] = Item(self.choice,self.name, self.mode, self.category, self.studentprice, self.duration, self.amount, self.stock, self.info, [self.name])
             return True     
     def cancelorder(self, choice):
-        print("ordercanceled")
+        print("ordercanceled\n")
         del self.modedlistofstuff()[choice]
     def order(self, choice, name):
-        print(f"{choice} ordered")
+        print(f"{choice} ordered!\n")
         history = open("history.txt", "a")
         history.write(f"Item: {choice}, Posted by {Operation.Inventory[choice].human}, Bought By {Operation.Inventory[choice].humanlist}\n")
         history.close
         del Operation.Inventory[choice]
         Operation.Students[name][-1].remove(choice)
     def buy(self):
-        self.choice = input("Please enter item name")
+        self.choice = input("Please enter item name: ")
         if self.uservalidation():
             if self.choice in Operation.Inventory:
                 with open("history.txt", "a") as history:
                     history.write(f"Item: {self.choice}, Posted by {Operation.Inventory[self.choice].human}, Bought By {self.name}\n")
                 del Operation.Inventory[self.choice]  
                 #Operation.Students[self.name][-1].remove(self.choice)
-                print(f"{self.choice} purchased!")
+                print(f"{self.choice} purchased!\n")
             
 while True:
     print("Welcome to the Yeshiva Marketplace")
-    Mode = int(input("Please select the following options \n 1. Group Order \n 2. Buy/Sell\n"))
+    Mode = int(input("Please select the following options: \n 1. Group Order \n 2. Buy/Sell\n"))
     category=  input("Please enter one of the following categories: Food, Amenities, Books/Sefarim\n")
     program = Operation(Mode, category)
     program.printavailableinventory()
     if Mode==1:    
-        choice = int(input("1. Join Order\n2. Create Order"))
+        choice = int(input("1. Join Order\n2. Create Order\n"))
         if choice == 1:
             program.joinorder()
             print(Operation.Inventory)
@@ -176,7 +176,7 @@ while True:
         elif choice == 2:
             program.addtoinventory(Mode, category)
     elif Mode==2:
-        choice = int(input("1. Post Item\n2.Buy Item"))
+        choice = int(input("1. Post Item\n2.Buy Item\n"))
         if choice == 1:
             program.addtoinventory(Mode, category)
             print(Operation.Inventory)
