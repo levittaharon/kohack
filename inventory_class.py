@@ -8,7 +8,7 @@ class inventory:
     # 10. HUMANLIST: list of participating students
     
     #for anything that is not necessary put in false as param
-    def __init__(self,item_name,seller_name,mode,category,price,time_left,amount_left,info,student_list):
+    def __init__(self,item_name,seller_name,mode,category,price,time_left,amount_left, amount, info,student_list):
         self.item_name = item_name #only necessary if specific item
         self.seller_name = seller_name
         self.mode = mode #bulk or individual
@@ -23,11 +23,11 @@ class inventory:
         #create a table in the student database that keeps track of the orders for each category
         con = sqlite3.connect("students.db")
         cur = con.cursor()
-        cur.execute("CREATE TABLE IF NOT EXISTS books(mode,item_name,seller_name,price,time_expire,amount_left INTEGER,info,student_list);")
-        cur.execute("CREATE TABLE IF NOT EXISTS food(mode,item_name,seller_name,price,time_expire,amount_left INTEGER,info,student_list);")
-        cur.execute("CREATE TABLE IF NOT EXISTS ammenities(mode,item_name,seller_name,price,time_expire,amount_left INTEGER,info,student_list);")
-        cur.execute("CREATE TABLE IF NOT EXISTS luggage(mode,item_name,seller_name,price,time_expire,amount_left INTEGER,info,student_list);")
-        cur.execute("CREATE TABLE IF NOT EXISTS transport(mode,item_name,seller_name,price,time_expire,amount_left INTEGER,info,student_list);")
+        cur.execute("CREATE TABLE IF NOT EXISTS books(mode,item_name,seller_name,price,time_expire,amount_left INTEGER,amount INTEGER NOT NULL,info,student_list);")
+        cur.execute("CREATE TABLE IF NOT EXISTS food(mode,item_name,seller_name,price,time_expire,amount_left INTEGER,amount INTEGER NOT NULL,info,student_list);")
+        cur.execute("CREATE TABLE IF NOT EXISTS ammenities(mode,item_name,seller_name,price,time_expire,amount_left INTEGER,amount INTEGER NOT NULL,info,student_list);")
+        cur.execute("CREATE TABLE IF NOT EXISTS luggage(mode,item_name,seller_name,price,time_expire,amount_left INTEGER,amount INTEGER NOT NULL,info,student_list);")
+        cur.execute("CREATE TABLE IF NOT EXISTS transport(mode,item_name,seller_name,price,time_expire,amount_left INTEGER,amount INTEGER NOT NULL,info,student_list);")
         #make a 1 column db to keep track of which tabs are being used to send to gui
         cur.execute("CREATE TABLE IF NOT EXISTS tab_list(tab_name);")
         cur.execute("INSERT INTO tab_list (tab_name) VALUES ('books'), ('food'), ('ammenities'), ('luggage'), ('transport');")#insert all of the defauslt values
@@ -38,7 +38,7 @@ class inventory:
         cur.execute(f"SELECT * FROM {self.category} WHERE item_name IS ? AND seller_name IS ?;",(self.item_name,self.seller_name))
         check = cur.fetchall()
         if len(check) == 0:
-            cur.execute(f"INSERT INTO {self.category} (mode,item_name,seller_name,price,time_expire,amount_left,info,student_list) VALUES (?,?,?,?,?,?,?,?);",(self.mode,self.item_name,self.seller_name,self.price,self.time_left,self.amount_left,self.info,self.student_list))
+            cur.execute(f"INSERT INTO {self.category} (mode,item_name,seller_name,price,time_expire,amount_left,amount,info,student_list) VALUES (?,?,?,?,?,?,?,?,?);",(self.mode,self.item_name,self.seller_name,self.price,self.time_left,self.amount_left,self.amount,self.info,self.student_list))
 
 
         else:
@@ -59,7 +59,7 @@ class inventory:
         cur.execute(f"SELECT item_name,amount_left,student_list FROM {self.category} WHERE item_name IS ? and seller_name IS ?;",(item_name,seller_name))
         info_list = cur.fetchall()
         info_list = list(info_list)
-        new_stock = info_list[1] -1
+        new_stock = info_list[1] -self.amount #get rid of ordered item from stock
         cur.execute(f"UPDATE {self.category} SET amount_left = ? WHERE item_name IS ? and seller_name IS ?;",(new_stock,item_name,seller_name))
         catalogue.send_notification(info_list)
 
