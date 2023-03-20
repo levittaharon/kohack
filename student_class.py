@@ -48,8 +48,3 @@ class student:
       
       print(result)
       return True
-
-  
-
-  def update_student(self):
-    pass

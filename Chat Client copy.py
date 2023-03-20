@@ -2,12 +2,12 @@ import socket
 import threading
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(("10.26.203.103", 55555))
+client.connect(("192.168.60.90", 55555))
 
 def recieve():
     while True:
         try:
-            message = client.recv(1024).decode("ascii")
+            message = client.recv(1024).decode("utf-8")
             print(message)
         except:
             print("Error!")
@@ -17,7 +17,7 @@ def recieve():
 def write():
     while True:
         message = input('')
-        client.send(message.encode("ascii"))
+        client.send(message.encode("utf-8"))
         
 recieve_thread = threading.Thread(target=recieve)
 recieve_thread.start()
