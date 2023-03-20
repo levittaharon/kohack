@@ -10,7 +10,7 @@ import student_class
 # 10. HUMANLIST: list of participating students
 class Item():
     def __init__(self, name, human, mode, category, studentprice, duration, amount, stock, info, humanlist):
-        print(f"New {name} Item created")
+        print(f"New {name} Item created\n")
         self.name = name
         self.category = category
         self.studentprice = studentprice
@@ -22,42 +22,62 @@ class Item():
         self.human = human
         self.humanlist = humanlist
         self.thread = threading.Thread(target=self.countdown)
-        self.thread.start
+        self.thread.start()
     def countdown(self):
-        self.timeleft = self.duration
         for i in range(self.duration):
             time.sleep(1)
-            self.timeleft-=1
-        print("Item expired")
+            self.duration-=1
+        print(f"{self.name} expired\n")
         
 
 #while Inventory["Pizza"].duration >0:
 #    print(Inventory["Pizza"].duration)
  
 class Operation:
+    
     ##IMPORTANT: Both the Studens Dictionary and the Items Dictionary are Static, meaning they do not differ based on the instance of a class and remain the same. 
     # All instances access the same dictionary and a change will affect all instances
     
     #Student Repository. The name of the student is the dictionary key, and the value is a list in the following format: 
     # [password, email, phone-number, [EMPTY LIST IN WHICH STUDENTS ORDERS WILL BE STORED]]
-    Students = {"John": ["613770", "j@F.com", "-8544-58-9234452", []], "Johannes": ["hi", "hi@F.com", "-8544-58-9234452", []]}
+    Students = {"John": ["613770", "j@F.com", "-8544-58-9234452", ["Hotdogs"]], "Johannes": ["hi", "hi@F.com", "-8544-58-9234452", []]}
     
     #Inventory of items contains keys which are the names of the item, and an isntance of an item class as their value
     Inventory = {"Pizza" : Item("Pizza", "Shloimy", 1, "Food", "$2", 500, 9, 1, "Tel Aviv Pizza Shop", ["Shloimy"]), 
-                 "Hotdogs" : Item("Pizza", "John", 1, "Food", "$1", 500, 12, 1, "Walmart", ["John"])}
+                 "Hotdogs" : Item("Hotdogs", "John", 1, "Food", "$1", 500, 12, 1, "Walmart", ["John"])}
+    
     
     #The constructor takes in the mode, digit 1 for bulk orders, and the digit 2 for buing/selling
     def __init__(self, mode, category):
         self.mode = int(mode)
         self.category = category
     
-    #This function creates a new user
-    def createnewuser(self, name, password):
-        email = input("Please enter Email: ")
-        phone = input("Please enter Phone: ")
-        #Adds the student to the Students dictionary with the value being a list, as noted above.
-        Operation.Students[name]=[password, phone, email, []]
-        return True
+    def uservalidation(self):
+        self.name = input("Please enter Name: ")
+        self.password = input("Please enter your password: ")
+        self.templist = self.modedlistofstuff()
+        for key, value in Operation.Students.items():
+            if self.name == key:
+                if self.password==value[0]:
+                    return True
+                else:
+                    print("Incorrect Password\n")
+                    retry = int(input("Try Again? \n1.Yes, 2.No\n"))
+                    if retry==2:
+                        return False
+                    else:
+                        self.uservalidation()
+        print("No such user, would you like to create one?\n")
+        newchoice = int(input("1. Yes, 2. No\n"))
+        if newchoice==1:
+            email = input("Please enter Email: ")
+            phone = input("Please enter Phone: ")
+            #Adds the student to the Students dictionary with the value being a list, as noted above.
+            Operation.Students[self.name]=[self.password, phone, email, []]
+            return True
+        else:
+            return False
+                    
     
     #Creates a list of stuff specific to the mode with which the class is instantiated.
     def modedlistofstuff(self):
@@ -73,113 +93,100 @@ class Operation:
     def printavailableinventory(self):
         inventory = self.modedlistofstuff()
         for key, value in inventory.items():  
-            print(f"item: {key}, organizer: {value.human}, price you pay: {value.studentprice}, Expires in {value.duration} secs, contributions needed: {value.amount}, quantity of bulk: {value.stock} participants: {value.humanlist}", "\n")
+            print(f"item: {key}, organizer: {value.human}, price you pay: {value.studentprice}, Expires in {value.duration} secs, contributions needed: {value.amount}, quantity of bulk: {value.stock}, participants: {value.humanlist}", "\n")
     
     #This function prints the additional info of the selected Item (choice)
     def info(self, choice):
         print(self.modedlistofstuff()[choice].info)
     
     #Allows the person to join the order, taking in as parameters the exact item he is joining and the amount of it he is purchasing
-    def joinorder(self, amount, choice):
-        if choice not in Operation.Inventory:
-            print("Item not found")
-            self.newchoice = int(input("Would you like to create an order?\n1. Yes, 2.No"))
+    def joinorder(self):
+        self.choice = input("Please enter item name: ")
+        print(Operation.Inventory[self.choice].duration)
+        self.amount = input("Please enter item amount: ")
+        if self.choice not in Operation.Inventory:
+            print("Item not found\n")
+            self.newchoice = int(input("Would you like to create an order?\n1. Yes, 2.No\n"))
             if self.newchoice==1:
-                self.addtoinventory(choice, self.mode, self.category)
-            
+                self.addtoinventory(self.mode, self.category)
         else:    
-            #Validates the user
-            self.name = input("Please enter Name: ")
-            self.password = input("Please enter your password: ")
-            self.templist = self.modedlistofstuff()
-            for key, value in Operation.Students.items():
-                if self.name == key:
-                    if self.password==value[0]:
-                        print("Order Joined")
-                        #Subrtacts the amount the man ordered from the item amount
-                        Operation.Inventory[choice].amount-=int(amount)
-                        #Appends the name of the orderee to the list of people involved in the order
-                        Operation.Inventory[choice].humanlist.append(self.name)
-                        #Adds the order to the list of orders the Student is involved in
-                        Operation.Students[self.name][-1].append(choice)
-                        
-                        #If the amount needed to complete the order is at 0, the item is ordered
-                        if self.templist[choice].amount==0:
-                            self.order(choice, self.name)
+            if self.uservalidation() and self.name not in Operation.Inventory[self.choice].humanlist:
+                print("Order Joined\n")
+                #Subrtacts the amount the man ordered from the item amount
+                Operation.Inventory[self.choice].amount-=int(self.amount)
+                #Appends the name of the orderee to the list of people involved in the order
+                Operation.Inventory[self.choice].humanlist.append(self.name)
+                #Adds the order to the list of orders the Student is involved in
+                Operation.Students[self.name][-1].append(self.choice) 
+                #If the amount needed to complete the order is at 0, the item is ordered
+                if self.templist[self.choice].amount==0:
+                    self.order(self.choice, self.name)
+                    return True
+            else:
+                print("Order already joined\n")
+                n = int(input("Would You like to update the Order? \n1.Yes, 2.No\n"))
+                if n==1:
+                    Operation.Inventory[self.choice].amount-=int(self.amount)
+                    if self.templist[self.choice].amount==0:
+                        self.order(self.choice, self.name)
                         return True
-                    else:
-                        print("Incorrect Password")
-                        return False
-            #If invalid, prompts the user to create a new user
-            print("No such user, would you like to create one?")
-            newchoice = int(input("1. yes, 2. no"))
-            if newchoice==1:
-                if self.createnewuser(self.name, self.password):
-                    #Repeats the same process described earlier in joining and order
-                    print("Order Joined")
-                    Operation.Inventory[choice].amount-=int(amount)
-                    Operation.Inventory[choice].humanlist.append(self.name)
-                    Operation.Students[self.name][-1].append(choice)
-                    if self.templist[choice].amount==0:
-                        self.order(choice, self.name)
+                    
     
-    
-    def addtoinventory(self, item, Mode, category):
-        self.item = item
+    def addtoinventory(self, Mode, category):
+        self.choice = input("Please enter item name: ")
         self.category =category
         self.mode = Mode
-        self.human = input("Please enter your name:")
-        self.password = input("Please enter your password:")
-        for key, value in Operation.Students.items():
-            if self.human == key:
-                if self.password==value[0]:
-                    self.studentprice, self.duration, self.amount, self.stock, self.info =input("").split(", ")
-                    Operation.Inventory[self.item] = Item(self.item, self.human, self.mode, self.category, self.studentprice, self.duration, self.amount, self.stock, self.info, [self.human])
-                    return True
-                else:
-                    print("Incorrect Password")
-                    return False
-            print("No such user, would you like to create one?")
-            newchoice = int(input("1. yes, 2. no"))
-            if newchoice==1:
-                if self.createnewuser(self.name, self.password):
-                    self.studentprice, self.duration, self.amount, self.stock, self.info =input("").split(", ")
-                    Operation.Inventory[self.item] = Item(self.item, self.human, self.mode, self.category, self.studentprice, self.duration, self.amount, self.stock, self.info, [self.human])
-                    return True        
+        if self.uservalidation():
+            self.studentprice, self.duration, self.amount, self.stock, self.info =input("").split(", ")
+            Operation.Inventory[self.choice] = Item(self.choice,self.name, self.mode, self.category, self.studentprice, self.duration, self.amount, self.stock, self.info, [self.name])
+            return True     
     def cancelorder(self, choice):
-        print("ordercanceled")
+        print("ordercanceled\n")
         del self.modedlistofstuff()[choice]
     def order(self, choice, name):
-        print(f"{choice} ordered")
+        print(f"{choice} ordered!\n")
+        history = open("history.txt", "a")
+        history.write(f"Item: {choice}, Posted by {Operation.Inventory[choice].human}, Bought By {Operation.Inventory[choice].humanlist}\n")
+        history.close
         del Operation.Inventory[choice]
         Operation.Students[name][-1].remove(choice)
+    def buy(self):
+        self.choice = input("Please enter item name: ")
+        if self.uservalidation():
+            if self.choice in Operation.Inventory:
+                with open("history.txt", "a") as history:
+                    history.write(f"Item: {self.choice}, Posted by {Operation.Inventory[self.choice].human}, Bought By {self.name}\n")
+                del Operation.Inventory[self.choice]  
+                #Operation.Students[self.name][-1].remove(self.choice)
+                print(f"{self.choice} purchased!\n")
+            
+while True:
+    print("Welcome to the Yeshiva Marketplace")
+    Mode = int(input("Please select the following options: \n 1. Group Order \n 2. Buy/Sell\n"))
+    category=  input("Please enter one of the following categories: Food, Amenities, Books/Sefarim\n")
+    program = Operation(Mode, category)
+    program.printavailableinventory()
+    if Mode==1:    
+        choice = int(input("1. Join Order\n2. Create Order\n"))
+        if choice == 1:
+            program.joinorder()
+            print(Operation.Inventory)
+            program.printavailableinventory()
+            print(Operation.Students)
+        elif choice == 2:
+            program.addtoinventory(Mode, category)
+    elif Mode==2:
+        choice = int(input("1. Post Item\n2.Buy Item\n"))
+        if choice == 1:
+            program.addtoinventory(Mode, category)
+            print(Operation.Inventory)
+            program.printavailableinventory()
+            print(Operation.Students)
+        elif choice == 2:
+            program.buy()
+    for key, value in Operation.Inventory.items():
+        if value.duration == 0:
+            del Operation.Inventory[key]
         
- 
-    
-
-print("Welcome to the Yeshiva Marketplace")
-Mode = int(input("Please select the following options \n 1. Group Order \n 2. Buy/Sell\n"))
-category=  input("Please enter one of the following categories: Food, Amenities, Books/Sefarim\n")
-program = Operation(Mode, category)
-program.printavailableinventory()
-if Mode==1:    
-    choice = int(input("1. Join Order\n2. Create Order"))
-    item = input("Please enter item name")
-    if choice == 1:
-        amount = input("Please enter item amount")
-        program.joinorder(amount, item)
-        print(Operation.Inventory)
-        program.printavailableinventory()
-        print(Operation.Students)
-    elif choice == 2:
-        program.addtoinventory(item, Mode, category)
-elif Mode==2:
-    choice = int(input("1. Post Item\n2.Buy Item"))
-    item = input("Please enter item name")
-    if choice == 1:
-        program.addtoinventory(item, Mode)
-        print(Operation.Inventory)
-        program.printavailableinventory()
-        print(Operation.Students)
              
 

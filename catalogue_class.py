@@ -34,7 +34,15 @@ class catalogue:
         item = info_list[0]
         stock = info_list[2]
         student_list = info_list[3]
-        msg = f"dear {user} your {item} item has been ordered by {student_list} and has {stock} left in stock."
+        #make sure that it's one big notification statement
+        if msg == "":
+            msg = f"dear {user} your {item} item has been ordered by {student_list} and has {stock} left in stock. \n"
+            
+        else:
+            msg += f"dear {user} your {item} item has been ordered by {student_list} and has {stock} left in stock. \n"
+        con = sqlite3.connect("students.db")
+        cur = con.cursor()
+        cur.execute("UPDATE directory SET notification = ? WHERE name IS ?;",(msg,user))
 #for testing purposes only
 #instance = catalogue()
 #print("testing")

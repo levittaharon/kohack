@@ -13,7 +13,7 @@ class student:
     conn = sqlite3.connect("students.db")
     cur = conn.cursor()
     #create a table for basic information of a student
-    cur.execute("CREATE TABLE IF NOT EXISTS directory(name TEXT NOT NULL PRIMARY KEY,password,email,phone);")
+    cur.execute("CREATE TABLE IF NOT EXISTS directory(name TEXT NOT NULL PRIMARY KEY,password,email,phone,notification);")
     #check for invalid password to display correct error message
     if self.password != "":
     #this is in a try except statement because if the data isn't correct then we need to send the user an error message
@@ -49,5 +49,6 @@ class student:
       print(result)
       return True
 
+#tesing
 hi = student("John", "Hi")
 hi.new_student("sk@sk.com",797966776)
