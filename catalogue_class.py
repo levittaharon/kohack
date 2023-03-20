@@ -103,7 +103,7 @@ class catalogue:
             msg += f"dear {user} your {item} item has been ordered by {student_list} and has {stock} left in stock. \n"
         con = sqlite3.connect("students.db")
         cur = con.cursor()
-        cur.execute("UPDATE directory SET notification = ? WHERE name IS ?;",(msg,user))
+        cur.execute("UPDATE sdirectory SET notification = ? WHERE name IS ?;",(msg,user))
         con.close()
 #for testing purposes only
 #instance = catalogue()
